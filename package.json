@@ -1,0 +1,23 @@
+{
+  "name": "metro",
+  "version": "0.0.1",
+  "description": "An open source 2D metrology system using flatbed scanners",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Open-Manufacturing-Initiative/metro.git"
+  },
+  "author": "Aaron Gough",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Open-Manufacturing-Initiative/metro/issues"
+  },
+  "homepage": "https://github.com/Open-Manufacturing-Initiative/metro#readme",
+  "devDependencies": {
+    "electron": "^10.1.1"
+  }
+}
