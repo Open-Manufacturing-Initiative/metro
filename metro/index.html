@@ -6,9 +6,142 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
   </head>
   <body>
-    <h1>Hello World!</h1>
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    <image id="scanImage" src="./static/backlit_scale_low.png" style="display: none;"/>
+    <script>
+      'use strict';
+
+      let image = document.getElementById("scanImage");
+
+      class Matrix {
+        constructor(width, height) {
+          this.width = width;
+          this.height = height;
+          this.matrix = new Array();
+          for(let i = 0; i < width; i++) {
+            this.matrix.push(new Uint8ClampedArray(height));
+          }
+        }
+
+        get(x, y) {
+          return this.matrix[x][y];
+        }
+
+        set(x, y, value) {
+          this.matrix[x][y] = value;
+        }
+
+        toImageData() {
+          let pixelData = new Uint8ClampedArray();
+
+          for(let y = 0; y < this.height; y++) {
+            for(let x = 0; x < this.width; x++) {
+              pixelData.push(this.get(x,y));
+              pixelData.push(this.get(x,y));
+              pixelData.push(this.get(x,y));
+              pixelData.push(255);
+            }
+          }
+
+          
+        }
+
+        static fromImageData(imageData) {
+          let matrix = new Matrix(imageData.width, imageData.height);
+
+          for(let i = 0; i < imageData.data.length; i += 4) {
+            let x = (i / 4) % imageData.width;
+            let y = parseInt((i / 4) / imageData.width);
+
+            matrix.set(x, y, imageData.data[i]);
+          }
+
+          return matrix;
+        }
+      }
+
+      class Canvas {
+        constructor(image) {
+          this.image = image;
+          this.canvas = document.createElement("canvas");
+          this.context = this.canvas.getContext("2d");
+
+          this.width = this.canvas.width = image.naturalWidth;
+          this.height = this.canvas.height = image.naturalHeight;
+          this.context.drawImage(image, 0, 0);
+
+          document.body.appendChild(this.canvas);
+          this.canvas.style = "width: 100%;";
+
+          this.canvas.addEventListener("click", function(event) {
+            let location = this.getClickLocation(event);
+
+            this.context.beginPath();
+            this.context.arc(location.x, location.y, 70, 0, 2 * Math.PI, false);
+            this.context.fillStyle = "red";
+            this.context.fill();
+          }.bind(this));
+        }
+
+        imageData() {
+          return this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+        }
+
+        getClickLocation(event) {
+          let rect = this.canvas.getBoundingClientRect(); // abs. size of element
+          let scaleX = this.canvas.width / rect.width;    // relationship bitmap vs. element for X
+          let scaleY = this.canvas.height / rect.height;  // relationship bitmap vs. element for Y
+
+          return {
+            x: (event.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
+            y: (event.clientY - rect.top) * scaleY     // been adjusted to be relative to element
+          }
+        }
+
+        measureCircleAt(location) {
+          let pixels = this.imageData().data;
+          let x = location.x;
+          let y = location.y;
+
+          // Threshold
+          for(let i = 0; i < pixels.length; i += 4) {
+            let value = pixels[i] > 190 ? 255 : 0;
+            pixels[i] = pixels[i+1] = pixels[i+2] = value
+          }
+
+        }
+
+        indexFromLocation(location) {
+
+        }
+      }
+
+      image.onload = function() {
+        let canvas = new Canvas(image);
+        let imageData = canvas.imageData();
+        let pixels = imageData.data;
+
+        console.log("Image loaded");
+
+        // Threshold
+        for(let i = 0; i < pixels.length; i += 4) {
+          let value = pixels[i] > 190 ? 255 : 0;
+          pixels[i] = pixels[i+1] = pixels[i+2] = value
+        }
+
+        console.log("Threshold done");
+
+        // Despeckle
+        let length = pixels.length;
+        let width = canvas.canvas.width;
+        for(let i = 0; i < pixels.length; i += 4) {
+          let x = (i / 4) % canvas.canvas.width;
+          let y = parseInt((i / 4) / canvas.canvas.width);
+        }
+
+        console.log("Despeckle done");
+
+        // Circle detection
+      }
+    </script>
   </body>
 </html>

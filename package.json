@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Open-Manufacturing-Initiative/metro#readme",
   "devDependencies": {
-    "electron": "^10.1.1"
+    "electron": "^10.1.1",
+    "electron-reload": "^1.5.0"
   }
 }

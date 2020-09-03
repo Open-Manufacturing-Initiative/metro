@@ -1,10 +1,14 @@
+'use strict';
+
 const { app, BrowserWindow } = require('electron')
+
+require('electron-reload')(__dirname);
 
 function createWindow () {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1024,
+    height: 768,
     webPreferences: {
       nodeIntegration: true
     }
@@ -12,6 +16,9 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadFile('metro/index.html')
+
+  // Open the DevTools.
+  win.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
