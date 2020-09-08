@@ -12,52 +12,7 @@
 
       let image = document.getElementById("scanImage");
 
-      class Matrix {
-        constructor(width, height) {
-          this.width = width;
-          this.height = height;
-          this.matrix = new Array();
-          for(let i = 0; i < width; i++) {
-            this.matrix.push(new Uint8ClampedArray(height));
-          }
-        }
 
-        get(x, y) {
-          return this.matrix[x][y];
-        }
-
-        set(x, y, value) {
-          this.matrix[x][y] = value;
-        }
-
-        toImageData() {
-          let pixelData = new Uint8ClampedArray();
-
-          for(let y = 0; y < this.height; y++) {
-            for(let x = 0; x < this.width; x++) {
-              pixelData.push(this.get(x,y));
-              pixelData.push(this.get(x,y));
-              pixelData.push(this.get(x,y));
-              pixelData.push(255);
-            }
-          }
-
-          
-        }
-
-        static fromImageData(imageData) {
-          let matrix = new Matrix(imageData.width, imageData.height);
-
-          for(let i = 0; i < imageData.data.length; i += 4) {
-            let x = (i / 4) % imageData.width;
-            let y = parseInt((i / 4) / imageData.width);
-
-            matrix.set(x, y, imageData.data[i]);
-          }
-
-          return matrix;
-        }
-      }
 
       class Canvas {
         constructor(image) {
@@ -107,40 +62,28 @@
             let value = pixels[i] > 190 ? 255 : 0;
             pixels[i] = pixels[i+1] = pixels[i+2] = value
           }
-
-        }
-
-        indexFromLocation(location) {
-
         }
       }
 
       image.onload = function() {
         let canvas = new Canvas(image);
         let imageData = canvas.imageData();
-        let pixels = imageData.data;
 
         console.log("Image loaded");
 
-        // Threshold
-        for(let i = 0; i < pixels.length; i += 4) {
-          let value = pixels[i] > 190 ? 255 : 0;
-          pixels[i] = pixels[i+1] = pixels[i+2] = value
-        }
+        let matrix = Matrix.fromImageData(imageData);
 
-        console.log("Threshold done");
+        console.log("Matrix created");
 
-        // Despeckle
-        let length = pixels.length;
-        let width = canvas.canvas.width;
-        for(let i = 0; i < pixels.length; i += 4) {
-          let x = (i / 4) % canvas.canvas.width;
-          let y = parseInt((i / 4) / canvas.canvas.width);
-        }
+        matrix.map(function(value) {
+          return 0;
+        });
 
-        console.log("Despeckle done");
+        console.log("Matrix mapped");
+        matrix.set(0, 0, 102);
+        console.log(matrix);
 
-        // Circle detection
+        canvas.context.putImageData(matrix.toImageData(), 0, 0);
       }
     </script>
   </body>
