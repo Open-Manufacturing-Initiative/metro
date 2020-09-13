@@ -2,11 +2,11 @@ module.exports = function(config) {
   config.set({
     frameworks: ['jasmine'],
     files: ['spec/**/*.js'],
-    reporters: ['progress'],
+    reporters: ['dots'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_WARN,
-    browsers: ['CustomElectron'],
+    browsers: ['JasmineElectron'],
     autoWatch: false,
     singleRun: true,
     concurrency: 1,
@@ -15,10 +15,10 @@ module.exports = function(config) {
     },
     client: {
       useIframe: false,
-      __filenameOverride: __dirname + '/metro/index.html'
+      __filenameOverride: __dirname + '/app/index.html'
     },
     customLaunchers: {
-      CustomElectron: {
+      JasmineElectron: {
         base: 'Electron',
         browserWindowOptions: {
           webPreferences: {

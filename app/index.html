@@ -10,9 +10,8 @@
     <script>
       'use strict';
 
+      let Matrix = require("./src/Matrix");
       let image = document.getElementById("scanImage");
-
-
 
       class Canvas {
         constructor(image) {
@@ -25,7 +24,7 @@
           this.context.drawImage(image, 0, 0);
 
           document.body.appendChild(this.canvas);
-          this.canvas.style = "width: 100%;";
+          //this.canvas.style = "width: 100%;";
 
           this.canvas.addEventListener("click", function(event) {
             let location = this.getClickLocation(event);
@@ -75,13 +74,18 @@
 
         console.log("Matrix created");
 
-        matrix.map(function(value) {
-          return 0;
-        });
+        //matrix.map(function(value) {
+        //  return value > 190 ? 255: 0;
+        //});
+
+        matrix = matrix.convolve(
+          [ 0,-1, 0,
+           -1, 5,-1,
+            0,-1, 0]
+        );
 
         console.log("Matrix mapped");
-        matrix.set(0, 0, 102);
-        console.log(matrix);
+        //console.log(matrix);
 
         canvas.context.putImageData(matrix.toImageData(), 0, 0);
       }
