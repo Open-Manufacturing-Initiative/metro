@@ -18,22 +18,60 @@ module.exports = class Matrix {
   }
 
   convolve(input) {
-    let kernel = Matrix.fromArray(3, 3, input.reverse());
+    let kernel = input.reverse();
     let output = new Matrix(this.width, this.height);
 
     for(let x = 0; x < this.width; x++) {
       for(let y = 0; y < this.height; y++) {
-        for(let kx = -1; kx < 2; kx++) {
-          for(let ky = -1; ky < 2; ky++) {
-            if(x == 0 && kx == -1) { continue; }
-            if(x == (this.width - 1) && kx == 1) { continue; }
-            if(y == 0 && ky == -1) { continue; }
-            if(y == (this.height - 1) && ky == 1) { continue; }
+        let accumulator = 0;
 
+        let xMinusOne = Math.max(0, x - 1);
+        let yMinusOne = Math.max(0, y - 1);
+        let yPlusOne  = Math.min(this.height - 1, y + 1);
+        let xPlusOne  = Math.min(this.width - 1, x + 1);
 
-            output[x][y] += (kernel[kx + 1][ky + 1] * this[x + kx][y + ky])
-          }
-        }
+        accumulator += (kernel[0] * this[xMinusOne][yMinusOne]);
+        accumulator += (kernel[1] * this[x        ][yMinusOne]);
+        accumulator += (kernel[2] * this[xPlusOne ][yMinusOne]);
+        accumulator += (kernel[3] * this[xMinusOne][y        ]);
+        accumulator += (kernel[4] * this[x        ][y        ]);
+        accumulator += (kernel[5] * this[xPlusOne ][y        ]);
+        accumulator += (kernel[6] * this[xMinusOne][yPlusOne ]);
+        accumulator += (kernel[7] * this[x        ][yPlusOne ]);
+        accumulator += (kernel[8] * this[xPlusOne ][yPlusOne ]);
+
+        output[x][y] = accumulator;
+      }
+    }
+
+    return output;
+  }
+
+  weightedConvolve(input) {
+    let kernel = input.reverse();
+    let output = new Matrix(this.width, this.height);
+    let weight = Math.max(1, kernel.reduce(function(a,b) { return a + b }));
+
+    for(let x = 0; x < this.width; x++) {
+      for(let y = 0; y < this.height; y++) {
+        let accumulator = 0;
+
+        let xMinusOne = Math.max(0, x - 1);
+        let yMinusOne = Math.max(0, y - 1);
+        let yPlusOne  = Math.min(this.height - 1, y + 1);
+        let xPlusOne  = Math.min(this.width - 1, x + 1);
+
+        accumulator += (kernel[0] * this[xMinusOne][yMinusOne]);
+        accumulator += (kernel[1] * this[x        ][yMinusOne]);
+        accumulator += (kernel[2] * this[xPlusOne ][yMinusOne]);
+        accumulator += (kernel[3] * this[xMinusOne][y        ]);
+        accumulator += (kernel[4] * this[x        ][y        ]);
+        accumulator += (kernel[5] * this[xPlusOne ][y        ]);
+        accumulator += (kernel[6] * this[xMinusOne][yPlusOne ]);
+        accumulator += (kernel[7] * this[x        ][yPlusOne ]);
+        accumulator += (kernel[8] * this[xPlusOne ][yPlusOne ]);
+
+        output[x][y] = Math.floor(accumulator / weight);
       }
     }
 

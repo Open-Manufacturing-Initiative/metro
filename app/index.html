@@ -74,15 +74,30 @@
 
         console.log("Matrix created");
 
-        //matrix.map(function(value) {
-        //  return value > 190 ? 255: 0;
-        //});
+        matrix = matrix.weightedConvolve(
+          [1,2,1,
+           2,4,2,
+           1,2,1]
+        );
+
+        matrix = matrix.weightedConvolve(
+          [1,2,1,
+           2,4,2,
+           1,2,1]
+        );
+
+        matrix.map(function(value) {
+          return value > 190 ? 255: 0;
+        });
 
         matrix = matrix.convolve(
-          [ 0,-1, 0,
-           -1, 5,-1,
-            0,-1, 0]
+          [-1,-1,-1,
+           -1, 8,-1,
+           -1,-1,-1]
         );
+
+
+
 
         console.log("Matrix mapped");
         //console.log(matrix);

@@ -1,5 +1,9 @@
 'use strict';
 
+// References regarding convolution:
+// http://www.songho.ca/dsp/convolution/convolution2d_example.html
+// https://en.wikipedia.org/wiki/Kernel_(image_processing)
+
 describe("Matrix", function() {
   let Matrix = require(__dirname + '../../app/src/Matrix');
 
@@ -55,35 +59,13 @@ describe("Matrix", function() {
   });
 
   describe("#convolve", function() {
-    it("applies a simple convolution kernel to a horizontal matrix", function() {
-      let matrix = Matrix.fromArray(3, 1, [1,2,3]);
-
-      let output = matrix.convolve(
-       [1,1,1,
-        3,0,2,
-        1,1,1]
-      );
-
-      expect(output.toArray()).toEqual([6,11,4]);
-    });
-
-    it("allows the use of negative values in the kernel", function() {
-      let matrix = Matrix.fromArray(3, 1, [1,2,3]);
-
-      let output = matrix.convolve(
-       [ 1, 1, 1,
-        -3, 0,-2,
-         1, 1, 1]
-      );
-
-      expect(output.toArray()).toEqual([-6,-11,-4]);
-    });
-
     it("applies a 3x3 convolution kernel to the matrix", function() {
-      let matrix = Matrix.fromArray(3, 3,
-       [1,2,3,
-        4,5,6,
-        7,8,9]
+      let matrix = Matrix.fromArray(5, 5,
+        [0,0,0,0,0,
+         0,1,2,3,0,
+         0,4,5,6,0,
+         0,7,8,9,0,
+         0,0,0,0,0]
       );
 
       let output = matrix.convolve(
@@ -93,10 +75,62 @@ describe("Matrix", function() {
       );
 
       expect(output.toArray()).toEqual(
-       [-13,-20,-17,
-        -18,-24,-18,
-         13, 20, 17]
+       [-1, -4, -8, -8,-3,
+        -4,-13,-20,-17,-6,
+        -6,-18,-24,-18,-6,
+         4, 13, 20, 17, 6,
+         7, 22, 32, 26, 9]
       );
+    });
+
+    it("tests the performance of convolve", function() {
+      let matrix = new Matrix(5000, 5000);
+      let startTime = Date.now();
+
+      let output = matrix.convolve(
+       [1,1,1,
+        1,1,1,
+        1,1,1]
+      );
+
+      let endTime = Date.now();
+      console.log(`convolve took: ${endTime - startTime} milliseconds`);
+    });
+  });
+
+  describe("#weightedConvolve", function() {
+    it("applies a 3x3 box blur convolution kernel to the matrix", function() {
+      let matrix = Matrix.fromArray(3, 3,
+        [1,1,1,
+         1,2,1,
+         1,1,1]
+      );
+
+      let output = matrix.weightedConvolve(
+       [1,1,1,
+        1,1,1,
+        1,1,1]
+      );
+
+      expect(output.toArray()).toEqual(
+        [1,1,1,
+         1,1,1,
+         1,1,1]
+      );
+    });
+
+    it("tests the performance of weightedConvolve", function() {
+      let matrix = new Matrix(5000, 5000);
+      let startTime = Date.now();
+
+      let output = matrix.weightedConvolve(
+       [1,1,1,
+        1,1,1,
+        1,1,1]
+      );
+
+      let endTime = Date.now();
+      console.log(`weightedConvolve took: ${endTime - startTime} milliseconds`);
     });
   });
 
