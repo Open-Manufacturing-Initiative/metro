@@ -58,7 +58,7 @@ module.exports = class Contour {
 
   static traceFromMatrix(matrix, startX, startY) {
     let contour = new Contour([new Point(startX, startY)]);
-    let contourColor = matrix[startX][startY];
+    let contourColor = matrix[contour.start().x][contour.start().y];
 
     while(true) {
       let newPoint = Contour.DIRECTIONS.find((direction) => {
@@ -74,8 +74,7 @@ module.exports = class Contour {
         return true;
       });
 
-      if(!newPoint) { break; }
+      if(!newPoint) { return contour; }
     }
-    return contour;
   }
 }

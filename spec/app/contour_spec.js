@@ -120,25 +120,7 @@ describe("Contour", function() {
       let contour = Contour.traceFromMatrix(matrix, 1, 1);
       expect(contour.boundingBox()).toEqual({ min: new Point(1, 1), max: new Point(8, 9) });
       expect(contour.points.length).toEqual(27);
-    });
-
-    it("traces a complete open contour when starting in the middle", function() {
-      let matrix = Matrix.fromArray(10, 10,
-        [0,0,0,0,0,0,0,0,0,0,
-         0,1,1,1,1,1,1,1,1,0,
-         0,1,0,0,0,0,0,0,1,0,
-         0,1,0,0,0,0,0,0,1,0,
-         0,1,0,0,0,0,0,0,1,0,
-         0,1,0,0,0,0,0,0,0,0,
-         0,1,0,0,0,0,0,0,0,0,
-         0,1,0,0,0,0,0,0,0,0,
-         0,1,0,0,0,0,0,0,0,0,
-         0,1,0,0,0,0,0,0,0,0]
-      );
-
-      let contour = Contour.traceFromMatrix(matrix, 8, 1);
-      expect(contour.boundingBox()).toEqual({ min: new Point(1, 1), max: new Point(8, 9) });
-      expect(contour.points.length).toEqual(19);
+      expect(contour.isClosed()).toEqual(true);
     });
   });
 });
