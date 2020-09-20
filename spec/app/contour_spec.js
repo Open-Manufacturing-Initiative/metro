@@ -15,10 +15,24 @@ describe("Contour", function() {
       let contour = new Contour([new Point(1,1),new Point(2,2)]);
       expect(contour.points).toEqual([new Point(1,1),new Point(2,2)]);
     });
+  });
 
-    it("correctly sets #boundingBox", function() {
+  describe("#includes", function() {
+    it("returns true if the contour includes a given point", function() {
+      let contour = new Contour([new Point(1,1),new Point(2,2)]);
+      expect(contour.includes(new Point(1,1))).toEqual(true);
+    });
+
+    it("returns false if the contour does not include a given point", function() {
+      let contour = new Contour([new Point(1,1),new Point(2,2)]);
+      expect(contour.includes(new Point(10,10))).toEqual(false);
+    });
+  });
+
+  describe("#boundingBox", function(){
+    it("correctly returns the bounding box", function(){
       let contour = new Contour([new Point(2,2), new Point(1,2), new Point(2,1), new Point(10,10), new Point(9,11)]);
-      expect(contour.boundingBox).toEqual({ min: new Point(1,1), max: new Point(10,11) });
+      expect(contour.boundingBox()).toEqual({ min: new Point(1,1), max: new Point(10,11) });
     });
   });
 
@@ -27,7 +41,7 @@ describe("Contour", function() {
       let matrix = Matrix.fromArray(10, 10,
         [0,0,0,0,0,0,0,0,0,0,
          0,1,1,1,0,0,1,1,1,0,
-         0,1,0,0,1,1,1,0,1,0,
+         0,1,0,0,1,1,0,0,1,0,
          0,1,0,0,0,0,0,0,1,0,
          0,1,1,1,0,0,0,0,1,0,
          0,0,0,1,0,0,0,1,0,0,
@@ -38,8 +52,8 @@ describe("Contour", function() {
       );
 
       let contour = Contour.traceFromMatrix(matrix, 1, 1);
-      expect(contour.boundingBox).toEqual([[1,1],[8,9]]);
-      expect(contour.points.length).toEqual(28);
+      expect(contour.boundingBox()).toEqual({ min: new Point(1, 1), max: new Point(8, 9) });
+      expect(contour.points.length).toEqual(27);
     });
   });
 });

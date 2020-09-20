@@ -5,62 +5,60 @@ let Point = require(__dirname + '/Point');
 module.exports = class Contour {
   constructor(points) {
     this.points = points;
-    this.boundingBox = { min: new Point(Infinity,Infinity), max: new Point(0,0) };
-
-    for(let i = 0; i < points.length; i++) {
-      if(points[i].x < this.boundingBox.min.x) { this.boundingBox.min.x = points[i].x; }
-      if(points[i].x > this.boundingBox.max.x) { this.boundingBox.max.x = points[i].x; }
-      if(points[i].y < this.boundingBox.min.y) { this.boundingBox.min.y = points[i].y; }
-      if(points[i].y > this.boundingBox.max.y) { this.boundingBox.max.y = points[i].y; }
-    }
   }
 
+  boundingBox() {
+    let boundingBox = { min: new Point(Infinity,Infinity), max: new Point(0,0) };
+
+    this.points.forEach((point) => {
+      if(point.x < boundingBox.min.x) { boundingBox.min.x = point.x; }
+      if(point.x > boundingBox.max.x) { boundingBox.max.x = point.x; }
+      if(point.y < boundingBox.min.y) { boundingBox.min.y = point.y; }
+      if(point.y > boundingBox.max.y) { boundingBox.max.y = point.y; }
+    });
+
+    return boundingBox;
+  }
+
+  includes(otherPoint) {
+    return this.points.find((point) => {
+      return point.x === otherPoint.x && point.y === otherPoint.y;
+    }) != undefined;
+  }
+
+  static DIRECTIONS = Object.freeze([
+    { x: 0, y:-1 },
+    { x: 1, y:-1 },
+    { x: 1, y: 0 },
+    { x: 1, y: 1 },
+    { x: 0, y: 1 },
+    { x:-1, y: 1 },
+    { x:-1, y: 0 },
+    { x:-1, y:-1 }
+  ]);
+
   static traceFromMatrix(matrix, startX, startY) {
-    let points = [ new Point(startX, startY) ];
+    let contour = new Contour([new Point(startX, startY)]);
     let contourColor = matrix[startX][startY];
 
-    let directions = [
-      { x: 0, y:-1 },
-      { x: 1, y:-1 },
-      { x: 1, y: 0 },
-      { x: 1, y: 1 },
-      { x: 0, y: 1 },
-      { x:-1, y: 1 },
-      { x:-1, y: 0 },
-      { x:-1, y:-1 }
-    ];
-
     while(true) {
-      let lastPoint = points[points.length - 2] || points[points.length - 1];
-      let currentPoint = points[points.length - 1];
-      let newPoint = undefined;
+      let lastPoint = contour.points[contour.points.length - 1];
 
-      console.log("LastPoint:");
-      console.log(lastPoint);
+      let newPoint = Contour.DIRECTIONS.find((direction) => {
+        let x = lastPoint.x + direction.x;
+        let y = lastPoint.y + direction.y;
 
+        if(x < 0 || x > matrix.width - 1)     { return false; }
+        if(y < 0 || y > matrix.height - 1)    { return false; }
+        if(matrix[x][y] != contourColor)      { return false; }
+        if(contour.includes(new Point(x,y)))  { return false; }
 
-      for(let i = 0; i < directions.length; i++) {
-        let x = currentPoint.x + directions[i].x;
-        let y = currentPoint.y + directions[i].y;
+        contour.points.push(new Point(x,y));
+        return true;
+      });
 
-        console.log(`X: ${x}, Y:${y}`);
-
-        if(x < 0 || x > matrix.width - 1)  { continue; }
-        if(y < 0 || y > matrix.height - 1) { continue; }
-        if(matrix[x][y] != contourColor)   { continue; }
-        if(x == lastPoint.x && y == lastPoint.y) { continue; }
-
-        console.log("Pushing point...");
-
-        points.push( new Point(x,y) );
-        break;
-      }
-
-      console.log(points[points.length - 1]);
-
-      if(points[points.length - 1] == points[0]) { break; }
-      if(points[points.length - 1] == currentPoint) { break; }
+      if(!newPoint) { break; }
     }
-
+    return contour;
   }
 }
