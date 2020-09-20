@@ -29,6 +29,72 @@ describe("Contour", function() {
     });
   });
 
+  describe("#isClosed", function() {
+    it("returns true if the contour is closed", function() {
+      let matrix = Matrix.fromArray(5, 5,
+        [0,0,0,0,0,
+         0,1,1,1,0,
+         0,1,0,1,0,
+         0,1,1,1,0,
+         0,0,0,0,0]
+      );
+      let contour = Contour.traceFromMatrix(matrix, 1, 1);
+      expect(contour.isClosed()).toEqual(true);
+    });
+
+    it("returns false if the contour is open", function() {
+      let matrix = Matrix.fromArray(5, 5,
+        [0,0,0,0,0,
+         0,1,1,1,0,
+         0,0,0,1,0,
+         0,1,1,1,0,
+         0,0,0,0,0]
+      );
+      let contour = Contour.traceFromMatrix(matrix, 1, 1);
+      expect(contour.isClosed()).toEqual(false);
+    });
+  });
+
+  describe("#isOpen", function() {
+    it("returns true if the contour is open", function() {
+      let matrix = Matrix.fromArray(5, 5,
+        [0,0,0,0,0,
+         0,1,1,1,0,
+         0,0,0,1,0,
+         0,1,1,1,0,
+         0,0,0,0,0]
+      );
+      let contour = Contour.traceFromMatrix(matrix, 1, 1);
+      expect(contour.isOpen()).toEqual(true);
+    });
+
+    it("returns false if the contour is closed", function() {
+      let matrix = Matrix.fromArray(5, 5,
+        [0,0,0,0,0,
+         0,1,1,1,0,
+         0,1,0,1,0,
+         0,1,1,1,0,
+         0,0,0,0,0]
+      );
+      let contour = Contour.traceFromMatrix(matrix, 1, 1);
+      expect(contour.isOpen()).toEqual(false);
+    });
+  });
+
+  describe("#start", function() {
+    it("returns the first point in the contour", function() {
+      let contour = new Contour([new Point(2,2), new Point(1,2), new Point(2,1), new Point(10,10), new Point(9,11)]);
+      expect(contour.start()).toEqual(new Point(2,2));
+    });
+  });
+
+  describe("#end", function() {
+    it("returns the last point in the contour", function() {
+      let contour = new Contour([new Point(2,2), new Point(1,2), new Point(2,1), new Point(10,10), new Point(9,11)]);
+      expect(contour.end()).toEqual(new Point(9,11));
+    });
+  });
+
   describe("#boundingBox", function(){
     it("correctly returns the bounding box", function(){
       let contour = new Contour([new Point(2,2), new Point(1,2), new Point(2,1), new Point(10,10), new Point(9,11)]);

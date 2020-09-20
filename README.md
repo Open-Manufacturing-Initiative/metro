@@ -1,6 +1,6 @@
 # Metro
 
-Metro is an open-source system for taking measurements of physical objects using flatbed scanners as an imaging system. Metro aims to replicate the functionality of a computerize 'optical comparator' for much lower cost and with no specialized hardware, albeit with lower accuracy.
+Metro is an open-source system for taking measurements of physical objects using flatbed scanners as an imaging system. Metro aims to replicate the functionality of a computerized 'optical comparator' for much lower cost and with no specialized hardware, albeit with reduced accuracy.
 
 Metro uses computer vision techniques for finding the outlines of scanned parts, classifying parts according to a stored library of user-created templates, and facilitating automatic measurement of parts.
 

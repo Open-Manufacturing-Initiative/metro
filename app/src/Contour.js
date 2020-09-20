@@ -26,6 +26,25 @@ module.exports = class Contour {
     }) != undefined;
   }
 
+  isClosed() {
+    let xDiff = Math.abs(this.start().x - this.end().x);
+    let yDiff = Math.abs(this.start().y - this.end().y);
+
+    return xDiff < 2 && yDiff < 2;
+  }
+
+  isOpen() {
+    return !this.isClosed();
+  }
+
+  start() {
+    return this.points[0];
+  }
+
+  end() {
+    return this.points[this.points.length - 1];
+  }
+
   static DIRECTIONS = Object.freeze([
     { x: 0, y:-1 },
     { x: 1, y:-1 },
@@ -42,11 +61,9 @@ module.exports = class Contour {
     let contourColor = matrix[startX][startY];
 
     while(true) {
-      let lastPoint = contour.points[contour.points.length - 1];
-
       let newPoint = Contour.DIRECTIONS.find((direction) => {
-        let x = lastPoint.x + direction.x;
-        let y = lastPoint.y + direction.y;
+        let x = contour.end().x + direction.x;
+        let y = contour.end().y + direction.y;
 
         if(x < 0 || x > matrix.width - 1)     { return false; }
         if(y < 0 || y > matrix.height - 1)    { return false; }
