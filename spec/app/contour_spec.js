@@ -123,4 +123,36 @@ describe("Contour", function() {
       expect(contour.isClosed()).toEqual(true);
     });
   });
+
+  describe(".findContoursFromMatrix", function() {
+    it("returns all the contours in a Matrix", function() {
+      let matrix = Matrix.fromArray(10, 10,
+        [0,0,0,0,1,1,1,1,1,1,
+         1,1,1,0,1,0,0,0,0,1,
+         1,0,1,0,1,0,0,0,0,1,
+         1,0,1,0,1,0,1,1,0,1,
+         1,1,1,0,1,0,1,1,0,1,
+         0,0,0,0,1,0,1,1,0,1,
+         1,1,1,0,1,0,1,1,0,1,
+         1,0,1,0,1,0,0,0,0,1,
+         1,1,1,0,1,0,0,0,0,1,
+         0,0,0,0,1,1,1,1,1,1]
+      );
+
+      let contours = Contour.findContoursFromMatrix(matrix);
+      expect(contours.length).toEqual(4);
+
+      expect(contours[0].boundingBox()).toEqual({ min: new Point(0,1), max: new Point(2,4) });
+      expect(contours[0].isClosed()).toEqual(true);
+
+      expect(contours[1].boundingBox()).toEqual({ min: new Point(0,6), max: new Point(2,8) });
+      expect(contours[1].isClosed()).toEqual(true);
+
+      expect(contours[2].boundingBox()).toEqual({ min: new Point(4,0), max: new Point(8,8) });
+      expect(contours[2].isClosed()).toEqual(true);
+
+      expect(contours[3].boundingBox()).toEqual({ min: new Point(6,3), max: new Point(7,6) });
+      expect(contours[3].isClosed()).toEqual(true);
+    });
+  });
 });
