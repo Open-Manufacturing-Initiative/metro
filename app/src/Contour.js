@@ -45,6 +45,12 @@ module.exports = class Contour {
     return this.points[this.points.length - 1];
   }
 
+  drawOnMatrix(matrix, color) {
+    this.points.forEach((point) => {
+      matrix[point.x][point.y] = color;
+    });
+  }
+
   static DIRECTIONS = Object.freeze([
     { x: 0, y:-1 },
     { x: 1, y:-1 },
@@ -76,5 +82,28 @@ module.exports = class Contour {
 
       if(!newPoint) { return contour; }
     }
+  }
+
+  static findContoursFromMatrix(matrix, backgroundColor = 0) {
+    let contours = [];
+
+    for(let x = 0; x < matrix.width; x++) {
+      for(let y = 0; y < matrix.height; y++) {
+        if(matrix[x][y] != backgroundColor) {
+          let contour = Contour.traceFromMatrix(matrix, x, y)
+          contour.drawOnMatrix(matrix, backgroundColor);
+
+          if(contour.isClosed() && contour.points.length > 9) {
+            contours.push(contour);
+          }
+        }
+      }
+    }
+
+    contours.forEach((contour) => {
+      contour.drawOnMatrix(matrix, 255);
+    });
+
+    return contours;
   }
 }

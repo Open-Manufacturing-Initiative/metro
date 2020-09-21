@@ -11,6 +11,8 @@
       'use strict';
 
       let Matrix = require("./src/Matrix");
+      let Contour = require("./src/Contour");
+      let Point = require("./src/Point");
       let image = document.getElementById("scanImage");
 
       class Canvas {
@@ -70,39 +72,44 @@
 
         console.log("Image loaded");
 
+        console.log("Creating Matrix...");
         let matrix = Matrix.fromImageData(imageData);
 
-        console.log("Matrix created");
-
+        console.log("Performing Gaussian blur...");
         matrix = matrix.weightedConvolve(
           [1,2,1,
            2,4,2,
            1,2,1]
         );
 
+        console.log("Performing 2nd Gaussian blur...");
         matrix = matrix.weightedConvolve(
           [1,2,1,
            2,4,2,
            1,2,1]
         );
 
+        console.log("Binarizing image...");
         matrix.map(function(value) {
           return value > 190 ? 255: 0;
         });
 
+        console.log("Performing edge detection...");
         matrix = matrix.convolve(
           [-1,-1,-1,
            -1, 8,-1,
            -1,-1,-1]
         );
 
+        console.log("Finding contours...");
+        let contours = Contour.findContoursFromMatrix(matrix, 0);
 
+        console.log(contours.length);
 
-
-        console.log("Matrix mapped");
-        //console.log(matrix);
-
+        console.log("Outputting matrix to canvas...");
         canvas.context.putImageData(matrix.toImageData(), 0, 0);
+
+        console.log("DONE");
       }
     </script>
   </body>

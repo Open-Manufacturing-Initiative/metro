@@ -30,7 +30,6 @@ Things that need to be done:
 - Implement `Contour#children`
 - Implement `Contour#parent`
 - Implement `Contour#drawOnCanvas(canvas, color)`
-- Implement `Contour#drawOnMatrix(matrix, color)`
 
 
 ### License

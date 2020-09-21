@@ -102,6 +102,23 @@ describe("Contour", function() {
     });
   });
 
+  describe("#drawOnMatrix", function(){
+    it("draws each of the points on a target Matrix in the given color", function(){
+      let contour = new Contour([new Point(1,1), new Point(1,2), new Point(1,3), new Point(2,4), new Point(3,4)]);
+      let matrix = new Matrix(5,5);
+
+      contour.drawOnMatrix(matrix, 9);
+
+      expect(matrix.toArray()).toEqual(
+       [0,0,0,0,0,
+        0,9,0,0,0,
+        0,9,0,0,0,
+        0,9,0,0,0,
+        0,0,9,9,0]
+      );
+    });
+  });
+
   describe(".traceFromMatrix", function() {
     it("returns a new contour with the correct points", function() {
       let matrix = Matrix.fromArray(10, 10,
@@ -129,14 +146,14 @@ describe("Contour", function() {
       let matrix = Matrix.fromArray(10, 10,
         [0,0,0,0,1,1,1,1,1,1,
          1,1,1,0,1,0,0,0,0,1,
-         1,0,1,0,1,0,0,0,0,1,
+         1,0,1,0,1,0,1,1,0,1,
          1,0,1,0,1,0,1,1,0,1,
          1,1,1,0,1,0,1,1,0,1,
          0,0,0,0,1,0,1,1,0,1,
          1,1,1,0,1,0,1,1,0,1,
          1,0,1,0,1,0,0,0,0,1,
-         1,1,1,0,1,0,0,0,0,1,
-         0,0,0,0,1,1,1,1,1,1]
+         1,0,1,0,1,0,0,0,0,1,
+         1,1,1,0,1,1,1,1,1,1]
       );
 
       let contours = Contour.findContoursFromMatrix(matrix);
@@ -145,14 +162,45 @@ describe("Contour", function() {
       expect(contours[0].boundingBox()).toEqual({ min: new Point(0,1), max: new Point(2,4) });
       expect(contours[0].isClosed()).toEqual(true);
 
-      expect(contours[1].boundingBox()).toEqual({ min: new Point(0,6), max: new Point(2,8) });
+      expect(contours[1].boundingBox()).toEqual({ min: new Point(0,6), max: new Point(2,9) });
       expect(contours[1].isClosed()).toEqual(true);
 
-      expect(contours[2].boundingBox()).toEqual({ min: new Point(4,0), max: new Point(8,8) });
+      expect(contours[2].boundingBox()).toEqual({ min: new Point(4,0), max: new Point(9,9) });
       expect(contours[2].isClosed()).toEqual(true);
 
-      expect(contours[3].boundingBox()).toEqual({ min: new Point(6,3), max: new Point(7,6) });
+      expect(contours[3].boundingBox()).toEqual({ min: new Point(6,2), max: new Point(7,6) });
       expect(contours[3].isClosed()).toEqual(true);
+    });
+
+    it("discards any open contours", function() {
+      let matrix = Matrix.fromArray(10, 10,
+        [0,0,1,0,0,1,0,1,0,0,
+         0,0,1,0,0,1,0,1,0,0,
+         0,0,1,0,0,1,0,1,0,0,
+         0,0,1,0,0,1,0,1,0,0,
+         0,0,1,0,0,1,0,1,0,0,
+         0,0,1,0,0,1,0,1,0,0,
+         0,0,1,0,0,1,0,1,0,0,
+         0,0,1,0,0,1,0,1,0,0,
+         0,0,1,0,0,1,0,1,0,0,
+         0,0,1,0,0,1,0,1,0,0]
+      );
+
+      let contours = Contour.findContoursFromMatrix(matrix);
+      expect(contours.length).toEqual(0);
+    });
+
+    it("discards any closed contours shorter than 10 points", function() {
+      let matrix = Matrix.fromArray(5, 5,
+        [0,0,0,0,0,
+         0,1,1,1,0,
+         0,1,0,1,0,
+         0,1,1,1,0,
+         0,0,0,0,0]
+      );
+
+      let contours = Contour.findContoursFromMatrix(matrix);
+      expect(contours.length).toEqual(0);
     });
   });
 });
