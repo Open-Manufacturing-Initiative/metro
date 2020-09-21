@@ -40,7 +40,7 @@ module.exports = class Matrix {
         accumulator += (kernel[7] * this[x        ][yPlusOne ]);
         accumulator += (kernel[8] * this[xPlusOne ][yPlusOne ]);
 
-        output[x][y] = accumulator;
+        output[x][y] = Math.min(Math.max(accumulator, 0), 255);
       }
     }
 
@@ -71,7 +71,7 @@ module.exports = class Matrix {
         accumulator += (kernel[7] * this[x        ][yPlusOne ]);
         accumulator += (kernel[8] * this[xPlusOne ][yPlusOne ]);
 
-        output[x][y] = Math.floor(accumulator / weight);
+        output[x][y] = Math.min(Math.max(Math.floor(accumulator / weight), 0), 255);
       }
     }
 

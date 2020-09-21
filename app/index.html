@@ -102,7 +102,7 @@
         );
 
         console.log("Finding contours...");
-        let contours = Contour.findContoursFromMatrix(matrix, 0);
+        let contour = Contour.traceFromMatrix(matrix, 120, 682);
 
         let randomColor = function() {
           let r, g, b;
@@ -122,14 +122,15 @@
           return color;
         }
 
-        console.log("Drawing contours...")
-        console.log(contours.length);
-        contours.forEach((contour) => {
-          contour.drawOnCanvas(canvas, randomColor());
-        });
+        console.log("Outputting matrix to canvas...");
+        canvas.context.putImageData(matrix.toImageData(), 0, 0);
 
-        //console.log("Outputting matrix to canvas...");
-        //canvas.context.putImageData(matrix.toImageData(), 0, 0);
+        console.log("Drawing contours...")
+        console.log(contour.points.length);
+        contour.drawOnCanvas(canvas, randomColor());
+
+        let imageUrl = canvas.canvas.toDataURL().replace("image/png", "image/octet-stream");;
+        window.open(imageUrl);
 
         console.log("DONE");
       }

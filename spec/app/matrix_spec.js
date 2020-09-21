@@ -75,9 +75,9 @@ describe("Matrix", function() {
       );
 
       expect(output.toArray()).toEqual(
-       [-1, -4, -8, -8,-3,
-        -4,-13,-20,-17,-6,
-        -6,-18,-24,-18,-6,
+       [ 0,  0,  0,  0, 0,
+         0,  0,  0,  0, 0,
+         0,  0,  0,  0, 0,
          4, 13, 20, 17, 6,
          7, 22, 32, 26, 9]
       );
@@ -95,6 +95,32 @@ describe("Matrix", function() {
 
       let endTime = Date.now();
       console.log(`convolve took: ${endTime - startTime} milliseconds`);
+    });
+
+    it("detects edges", function() {
+      let matrix = Matrix.fromArray(6, 6,
+        [  0,  0,  0,  0,  0,  0,
+           0,  0,  0,  0,  0,  0,
+           0,  0,  0,  0,  0,  0,
+         255,255,255,255,255,255,
+         255,255,255,255,255,255,
+         255,255,255,255,255,255]
+      );
+
+      let output = matrix.convolve(
+       [-1,-1,-1,
+        -1, 8,-1,
+        -1,-1,-1]
+      );
+
+      expect(new Uint8ClampedArray(output.toArray())).toEqual(new Uint8ClampedArray(
+        [  0,  0,  0,  0,  0,  0,
+           0,  0,  0,  0,  0,  0,
+           0,  0,  0,  0,  0,  0,
+         255,255,255,255,255,255,
+           0,  0,  0,  0,  0,  0,
+           0,  0,  0,  0,  0,  0]
+      ));
     });
   });
 
