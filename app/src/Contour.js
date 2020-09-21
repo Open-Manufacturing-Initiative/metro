@@ -51,6 +51,14 @@ module.exports = class Contour {
     });
   }
 
+  drawOnCanvas(canvas, color) {
+    let context = canvas.canvas.getContext("2d");
+    context.fillStyle = color;
+    this.points.forEach((point) => {
+      context.fillRect( point.x, point.y, 1, 1 );
+    });
+  }
+
   static DIRECTIONS = Object.freeze([
     { x: 0, y:-1 },
     { x: 1, y:-1 },
@@ -92,10 +100,10 @@ module.exports = class Contour {
         if(matrix[x][y] != backgroundColor) {
           let contour = Contour.traceFromMatrix(matrix, x, y)
           contour.drawOnMatrix(matrix, backgroundColor);
-
-          if(contour.isClosed() && contour.points.length > 9) {
-            contours.push(contour);
-          }
+          contours.push(contour);
+          //if(contour.isClosed() && contour.points.length > 9) {
+          //  contours.push(contour);
+          //}
         }
       }
     }

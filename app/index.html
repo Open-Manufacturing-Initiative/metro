@@ -75,14 +75,14 @@
         console.log("Creating Matrix...");
         let matrix = Matrix.fromImageData(imageData);
 
-        console.log("Performing Gaussian blur...");
+        console.log("Denoising (Pass 1)...");
         matrix = matrix.weightedConvolve(
           [1,2,1,
            2,4,2,
            1,2,1]
         );
 
-        console.log("Performing 2nd Gaussian blur...");
+        console.log("Denoising (Pass 2)...");
         matrix = matrix.weightedConvolve(
           [1,2,1,
            2,4,2,
@@ -104,10 +104,32 @@
         console.log("Finding contours...");
         let contours = Contour.findContoursFromMatrix(matrix, 0);
 
-        console.log(contours.length);
+        let randomColor = function() {
+          let r, g, b;
+          let h = Math.floor(Math.random() * 30) / 30;
+          let i = ~~(h * 6);
+          let f = h * 6 - i;
+          let q = 1 - f;
+          switch(i % 6){
+            case 0: r = 1; g = f; b = 0; break;
+            case 1: r = q; g = 1; b = 0; break;
+            case 2: r = 0; g = 1; b = f; break;
+            case 3: r = 0; g = q; b = 1; break;
+            case 4: r = f; g = 0; b = 1; break;
+            case 5: r = 1; g = 0; b = q; break;
+          }
+          let color = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2);
+          return color;
+        }
 
-        console.log("Outputting matrix to canvas...");
-        canvas.context.putImageData(matrix.toImageData(), 0, 0);
+        console.log("Drawing contours...")
+        console.log(contours.length);
+        contours.forEach((contour) => {
+          contour.drawOnCanvas(canvas, randomColor());
+        });
+
+        //console.log("Outputting matrix to canvas...");
+        //canvas.context.putImageData(matrix.toImageData(), 0, 0);
 
         console.log("DONE");
       }
