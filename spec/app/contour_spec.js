@@ -125,7 +125,7 @@ describe("Contour", function() {
         [0,0,0,0,0,0,0,0,0,0,
          0,1,1,1,0,0,1,1,1,0,
          0,1,0,1,1,1,1,0,1,0,
-         1,1,0,0,0,1,0,0,1,0,
+         0,1,0,0,0,1,0,0,1,0,
          0,1,1,1,0,0,0,1,1,0,
          0,0,0,1,0,0,0,1,0,0,
          0,0,0,1,0,0,1,1,0,0,
@@ -136,7 +136,9 @@ describe("Contour", function() {
 
       let contour = Contour.traceFromMatrix(matrix, 1, 1);
       expect(contour.boundingBox()).toEqual({ min: new Point(1, 1), max: new Point(8, 9) });
-      expect(contour.points.length).toEqual(33);
+      expect(contour.points.length).toEqual(31);
+      console.log(contour.start());
+      console.log(contour.end());
       expect(contour.isClosed()).toEqual(true);
     });
   });
