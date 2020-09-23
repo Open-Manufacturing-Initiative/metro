@@ -119,6 +119,120 @@ describe("Contour", () => {
     });
   });
 
+  describe("#xMinIntersect", () => {
+    it("returns the coordinates of the left-most point in the contour", () => {
+      let matrix = Matrix.fromArray(11, 11,
+        [0,0,0,0,1,1,1,0,0,0,0,
+         0,0,0,1,0,0,0,1,0,0,0,
+         0,0,1,0,0,0,0,0,1,0,0,
+         0,1,0,0,0,0,0,0,0,1,0,
+         1,0,0,0,0,0,0,0,0,0,1,
+         1,0,0,0,0,0,0,0,0,0,1,
+         1,0,0,0,0,0,0,0,0,0,1,
+         0,1,0,0,0,0,0,0,0,1,0,
+         0,0,1,0,0,0,0,0,1,0,0,
+         0,0,0,1,0,0,0,1,0,0,0,
+         0,0,0,0,1,1,1,0,0,0,0]
+      );
+
+      let contour = Contour.traceFromMatrix(matrix, 5, 0);
+      expect(contour.boundingBox()).toEqual({ min: new Point(0, 0), max: new Point(10, 10) });
+      expect(contour.points.length).toEqual(24);
+      expect(contour.xMinIntersect()).toEqual(new Point(0,4));
+    });
+  });
+
+  describe("#xMaxIntersect", () => {
+    it("returns the coordinates of the right-most point in the contour", () => {
+      let matrix = Matrix.fromArray(11, 11,
+        [0,0,0,0,1,1,1,0,0,0,0,
+         0,0,0,1,0,0,0,1,0,0,0,
+         0,0,1,0,0,0,0,0,1,0,0,
+         0,1,0,0,0,0,0,0,0,1,0,
+         1,0,0,0,0,0,0,0,0,0,1,
+         1,0,0,0,0,0,0,0,0,0,1,
+         1,0,0,0,0,0,0,0,0,0,1,
+         0,1,0,0,0,0,0,0,0,1,0,
+         0,0,1,0,0,0,0,0,1,0,0,
+         0,0,0,1,0,0,0,1,0,0,0,
+         0,0,0,0,1,1,1,0,0,0,0]
+      );
+
+      let contour = Contour.traceFromMatrix(matrix, 5, 0);
+      expect(contour.boundingBox()).toEqual({ min: new Point(0, 0), max: new Point(10, 10) });
+      expect(contour.points.length).toEqual(24);
+      expect(contour.xMaxIntersect()).toEqual(new Point(10,6));
+    });
+  });
+
+  describe("#yMinIntersect", () => {
+    it("returns the coordinates of the left-most point in the contour", () => {
+      let matrix = Matrix.fromArray(11, 11,
+        [0,0,0,0,1,1,1,0,0,0,0,
+         0,0,0,1,0,0,0,1,0,0,0,
+         0,0,1,0,0,0,0,0,1,0,0,
+         0,1,0,0,0,0,0,0,0,1,0,
+         1,0,0,0,0,0,0,0,0,0,1,
+         1,0,0,0,0,0,0,0,0,0,1,
+         1,0,0,0,0,0,0,0,0,0,1,
+         0,1,0,0,0,0,0,0,0,1,0,
+         0,0,1,0,0,0,0,0,1,0,0,
+         0,0,0,1,0,0,0,1,0,0,0,
+         0,0,0,0,1,1,1,0,0,0,0]
+      );
+
+      let contour = Contour.traceFromMatrix(matrix, 5, 0);
+      expect(contour.boundingBox()).toEqual({ min: new Point(0, 0), max: new Point(10, 10) });
+      expect(contour.points.length).toEqual(24);
+      expect(contour.yMinIntersect()).toEqual(new Point(6,0));
+    });
+  });
+
+  describe("#yMaxIntersect", () => {
+    it("returns the coordinates of the bottom-most point in the contour", () => {
+      let matrix = Matrix.fromArray(11, 11,
+        [0,0,0,0,1,1,1,0,0,0,0,
+         0,0,0,1,0,0,0,1,0,0,0,
+         0,0,1,0,0,0,0,0,1,0,0,
+         0,1,0,0,0,0,0,0,0,1,0,
+         1,0,0,0,0,0,0,0,0,0,1,
+         1,0,0,0,0,0,0,0,0,0,1,
+         1,0,0,0,0,0,0,0,0,0,1,
+         0,1,0,0,0,0,0,0,0,1,0,
+         0,0,1,0,0,0,0,0,1,0,0,
+         0,0,0,1,0,0,0,1,0,0,0,
+         0,0,0,0,1,1,1,0,0,0,0]
+      );
+
+      let contour = Contour.traceFromMatrix(matrix, 5, 0);
+      expect(contour.boundingBox()).toEqual({ min: new Point(0, 0), max: new Point(10, 10) });
+      expect(contour.points.length).toEqual(24);
+      expect(contour.yMaxIntersect()).toEqual(new Point(4,10));
+    });
+  });
+
+  describe("#findVertices", () => {
+    it("returns the coordinates of the vertices in the contour", () => {
+      let matrix = Matrix.fromArray(11, 11,
+        [0,0,0,0,1,1,1,0,0,0,0,
+         0,0,0,1,0,0,0,1,0,0,0,
+         0,0,1,0,0,0,0,0,1,0,0,
+         0,1,0,0,0,0,0,0,0,1,0,
+         1,0,0,0,0,0,0,0,0,0,1,
+         1,0,0,0,0,0,0,0,0,0,1,
+         1,0,0,0,0,0,0,0,0,0,1,
+         0,1,0,0,0,0,0,0,0,1,0,
+         0,0,1,0,0,0,0,0,1,0,0,
+         0,0,0,1,0,0,0,1,0,0,0,
+         0,0,0,0,1,1,1,0,0,0,0]
+      );
+
+      let contour = Contour.traceFromMatrix(matrix, 5, 0);
+      expect(contour.points.length).toEqual(24);
+      expect(contour.findVertices()).toEqual([new Point(5,0), new Point(10,5), new Point(5, 10), new Point(0,5)]);
+    });
+  });
+
   describe(".traceFromMatrix", () => {
     it("returns a new contour with the correct points", () => {
       let matrix = Matrix.fromArray(10, 10,
@@ -137,8 +251,6 @@ describe("Contour", () => {
       let contour = Contour.traceFromMatrix(matrix, 1, 1);
       expect(contour.boundingBox()).toEqual({ min: new Point(1, 1), max: new Point(8, 9) });
       expect(contour.points.length).toEqual(31);
-      console.log(contour.start());
-      console.log(contour.end());
       expect(contour.isClosed()).toEqual(true);
     });
   });

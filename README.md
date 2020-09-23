@@ -24,6 +24,14 @@ To install Metro as an end-user please see the Metro website: TODO
 
 Things that need to be done:
 - `Matrix.fromArray` should raise error when `array.length != width * height`
+- Work on automatically determing correct threshold level
+- Work on finding contour centroids
+- Shape classification by counting centroid to contour distance peaks?
+- Work on classifying & fingerprinting Parts
+- Work out nicer way of setting up tests with matrixes
+- Work out how to use images as input for specs
+- Implement `Contour#xMinIntersect`, etc...
+- Implement `Contour#minBoundingCircle`?
 - Implement `Contour#width`
 - Implement `Contour#height`
 - Implement `Contour#center`

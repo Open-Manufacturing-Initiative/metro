@@ -45,6 +45,42 @@ module.exports = class Contour {
     return this.points[this.points.length - 1];
   }
 
+  xMinIntersect() {
+    let xMin = this.boundingBox().min.x;
+    let xMinIntersect = new Point(xMin,Infinity);
+    this.points.forEach((point) => {
+      if(point.x === xMin && point.y < xMinIntersect.y) { xMinIntersect = point; }
+    });
+    return xMinIntersect;
+  }
+
+  xMaxIntersect() {
+    let xMax = this.boundingBox().max.x;
+    let xMaxIntersect = new Point(xMax,0);
+    this.points.forEach((point) => {
+      if(point.x === xMax && point.y > xMaxIntersect.y) { xMaxIntersect = point; }
+    });
+    return xMaxIntersect;
+  }
+
+  yMinIntersect() {
+    let yMin = this.boundingBox().min.y;
+    let yMinIntersect = new Point(0,yMin);
+    this.points.forEach((point) => {
+      if(point.y === yMin && point.x > yMinIntersect.x) { yMinIntersect = point; }
+    });
+    return yMinIntersect;
+  }
+
+  yMaxIntersect() {
+    let yMax = this.boundingBox().max.y;
+    let yMaxIntersect = new Point(Infinity,yMax);
+    this.points.forEach((point) => {
+      if(point.y === yMax && point.x < yMaxIntersect.x) { yMaxIntersect = point; }
+    });
+    return yMaxIntersect;
+  }
+
   drawOnMatrix(matrix, color) {
     this.points.forEach((point) => {
       matrix[point.x][point.y] = color;
@@ -53,6 +89,45 @@ module.exports = class Contour {
 
   drawOnCanvas(canvas, color) {
     let context = canvas.canvas.getContext("2d");
+    let boundingBox = this.boundingBox();
+
+    context.beginPath();
+    context.moveTo(boundingBox.min.x, boundingBox.min.y);
+    context.lineTo(boundingBox.max.x, boundingBox.min.y);
+    context.lineTo(boundingBox.max.x, boundingBox.max.y);
+    context.lineTo(boundingBox.min.x, boundingBox.max.y);
+    context.lineTo(boundingBox.min.x, boundingBox.min.y);
+    context.strokeStyle = "green";
+    context.stroke();
+
+    let xMinIntersect = this.xMinIntersect();
+
+    context.beginPath();
+    context.arc(xMinIntersect.x, xMinIntersect.y, 4, 0, 2 * Math.PI, false);
+    context.fillStyle = "blue";
+    context.fill();
+
+    let xMaxIntersect = this.xMaxIntersect();
+
+    context.beginPath();
+    context.arc(xMaxIntersect.x, xMaxIntersect.y, 4, 0, 2 * Math.PI, false);
+    context.fillStyle = "blue";
+    context.fill();
+
+    let yMinIntersect = this.yMinIntersect();
+
+    context.beginPath();
+    context.arc(yMinIntersect.x, yMinIntersect.y, 4, 0, 2 * Math.PI, false);
+    context.fillStyle = "blue";
+    context.fill();
+
+    let yMaxIntersect = this.yMaxIntersect();
+
+    context.beginPath();
+    context.arc(yMaxIntersect.x, yMaxIntersect.y, 4, 0, 2 * Math.PI, false);
+    context.fillStyle = "blue";
+    context.fill();
+
     context.fillStyle = color;
     this.points.forEach((point) => {
       context.fillRect( point.x, point.y, 1, 1 );
