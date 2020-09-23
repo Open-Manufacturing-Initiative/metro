@@ -1,36 +1,36 @@
 'use strict';
 
-describe("Contour", function() {
+describe("Contour", () => {
   let Contour = require(__dirname + '../../app/src/Contour');
-  let Point = require(__dirname + '../../app/src/Point');
-  let Matrix = require(__dirname + '../../app/src/Matrix');
+  let Point   = require(__dirname + '../../app/src/Point');
+  let Matrix  = require(__dirname + '../../app/src/Matrix');
 
-  describe("new", function() {
-    it("returns a Contour", function() {
+  describe("new", () => {
+    it("returns a Contour", () => {
       let contour = new Contour([new Point(1,1),new Point(2,2)]);
       expect(contour).toEqual(jasmine.any(Contour));
     });
 
-    it("correctly sets #points", function() {
+    it("correctly sets #points", () => {
       let contour = new Contour([new Point(1,1),new Point(2,2)]);
       expect(contour.points).toEqual([new Point(1,1),new Point(2,2)]);
     });
   });
 
-  describe("#includes", function() {
-    it("returns true if the contour includes a given point", function() {
+  describe("#includes", () => {
+    it("returns true if the contour includes a given point", () => {
       let contour = new Contour([new Point(1,1),new Point(2,2)]);
       expect(contour.includes(new Point(1,1))).toEqual(true);
     });
 
-    it("returns false if the contour does not include a given point", function() {
+    it("returns false if the contour does not include a given point", () => {
       let contour = new Contour([new Point(1,1),new Point(2,2)]);
       expect(contour.includes(new Point(10,10))).toEqual(false);
     });
   });
 
-  describe("#isClosed", function() {
-    it("returns true if the contour is closed", function() {
+  describe("#isClosed", () => {
+    it("returns true if the contour is closed", () => {
       let matrix = Matrix.fromArray(5, 5,
         [0,0,0,0,0,
          0,1,1,1,0,
@@ -42,7 +42,7 @@ describe("Contour", function() {
       expect(contour.isClosed()).toEqual(true);
     });
 
-    it("returns false if the contour is open", function() {
+    it("returns false if the contour is open", () => {
       let matrix = Matrix.fromArray(5, 5,
         [0,0,0,0,0,
          0,1,1,1,0,
@@ -55,8 +55,8 @@ describe("Contour", function() {
     });
   });
 
-  describe("#isOpen", function() {
-    it("returns true if the contour is open", function() {
+  describe("#isOpen", () => {
+    it("returns true if the contour is open", () => {
       let matrix = Matrix.fromArray(5, 5,
         [0,0,0,0,0,
          0,1,1,1,0,
@@ -68,7 +68,7 @@ describe("Contour", function() {
       expect(contour.isOpen()).toEqual(true);
     });
 
-    it("returns false if the contour is closed", function() {
+    it("returns false if the contour is closed", () => {
       let matrix = Matrix.fromArray(5, 5,
         [0,0,0,0,0,
          0,1,1,1,0,
@@ -81,29 +81,29 @@ describe("Contour", function() {
     });
   });
 
-  describe("#start", function() {
-    it("returns the first point in the contour", function() {
+  describe("#start", () => {
+    it("returns the first point in the contour", () => {
       let contour = new Contour([new Point(2,2), new Point(1,2), new Point(2,1), new Point(10,10), new Point(9,11)]);
       expect(contour.start()).toEqual(new Point(2,2));
     });
   });
 
-  describe("#end", function() {
-    it("returns the last point in the contour", function() {
+  describe("#end", () => {
+    it("returns the last point in the contour", () => {
       let contour = new Contour([new Point(2,2), new Point(1,2), new Point(2,1), new Point(10,10), new Point(9,11)]);
       expect(contour.end()).toEqual(new Point(9,11));
     });
   });
 
-  describe("#boundingBox", function(){
-    it("correctly returns the bounding box", function(){
+  describe("#boundingBox", () =>{
+    it("correctly returns the bounding box", () =>{
       let contour = new Contour([new Point(2,2), new Point(1,2), new Point(2,1), new Point(10,10), new Point(9,11)]);
       expect(contour.boundingBox()).toEqual({ min: new Point(1,1), max: new Point(10,11) });
     });
   });
 
-  describe("#drawOnMatrix", function(){
-    it("draws each of the points on a target Matrix in the given color", function(){
+  describe("#drawOnMatrix", () =>{
+    it("draws each of the points on a target Matrix in the given color", () =>{
       let contour = new Contour([new Point(1,1), new Point(1,2), new Point(1,3), new Point(2,4), new Point(3,4)]);
       let matrix = new Matrix(5,5);
 
@@ -119,8 +119,8 @@ describe("Contour", function() {
     });
   });
 
-  describe(".traceFromMatrix", function() {
-    it("returns a new contour with the correct points", function() {
+  describe(".traceFromMatrix", () => {
+    it("returns a new contour with the correct points", () => {
       let matrix = Matrix.fromArray(10, 10,
         [0,0,0,0,0,0,0,0,0,0,
          0,1,1,1,0,0,1,1,1,0,
@@ -143,8 +143,8 @@ describe("Contour", function() {
     });
   });
 
-  describe(".findContoursFromMatrix", function() {
-    it("returns all the contours in a Matrix", function() {
+  describe(".findContoursFromMatrix", () => {
+    it("returns all the contours in a Matrix", () => {
       let matrix = Matrix.fromArray(10, 10,
         [0,0,0,0,1,1,1,1,1,1,
          1,1,1,0,1,0,0,0,0,1,
@@ -174,7 +174,7 @@ describe("Contour", function() {
       expect(contours[3].isClosed()).toEqual(true);
     });
 
-    it("discards any open contours", function() {
+    it("discards any open contours", () => {
       let matrix = Matrix.fromArray(10, 10,
         [0,0,1,0,0,1,0,1,0,0,
          0,0,1,0,0,1,0,1,0,0,
@@ -192,7 +192,7 @@ describe("Contour", function() {
       expect(contours.length).toEqual(0);
     });
 
-    it("discards any closed contours shorter than 10 points", function() {
+    it("discards any closed contours shorter than 10 points", () => {
       let matrix = Matrix.fromArray(5, 5,
         [0,0,0,0,0,
          0,1,1,1,0,

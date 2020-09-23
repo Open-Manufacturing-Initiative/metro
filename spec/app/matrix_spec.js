@@ -4,34 +4,34 @@
 // http://www.songho.ca/dsp/convolution/convolution2d_example.html
 // https://en.wikipedia.org/wiki/Kernel_(image_processing)
 
-describe("Matrix", function() {
+describe("Matrix", () => {
   let Matrix = require(__dirname + '../../app/src/Matrix');
 
-  describe("new", function() {
-    it("returns a Matrix", function() {
+  describe("new", () => {
+    it("returns a Matrix", () => {
       let matrix = new Matrix(10, 10);
       expect(matrix).toEqual(jasmine.any(Matrix));
     });
 
-    it("returns a Matrix with the correct width", function() {
+    it("returns a Matrix with the correct width", () => {
       let matrix = new Matrix(10, 12);
       expect(matrix.width).toEqual(10);
     });
 
-    it("returns a Matrix with the correct height", function() {
+    it("returns a Matrix with the correct height", () => {
       let matrix = new Matrix(10, 12);
       expect(matrix.height).toEqual(12);
     });
 
-    it("returns a Matrix with a correctly sized 2D matrix array", function() {
+    it("returns a Matrix with a correctly sized 2D matrix array", () => {
       let matrix = new Matrix(10, 12);
       expect(matrix.width).toEqual(10);
       expect(matrix[0].length).toEqual(12);
     });
   });
 
-  describe("#[]", function() {
-    it("sets and returns the value at the given location", function() {
+  describe("#[]", () => {
+    it("sets and returns the value at the given location", () => {
       let matrix = new Matrix(3, 3);
       matrix[0][1] = 123;
 
@@ -39,8 +39,8 @@ describe("Matrix", function() {
     });
   });
 
-  describe("#map", function() {
-    it("applies a function to all values in the matrix", function() {
+  describe("#map", () => {
+    it("applies a function to all values in the matrix", () => {
       let matrix = new Matrix(2, 2);
       matrix[0][0] = 0;
       matrix[1][0] = 2;
@@ -58,8 +58,8 @@ describe("Matrix", function() {
     });
   });
 
-  describe("#convolve", function() {
-    it("applies a 3x3 convolution kernel to the matrix", function() {
+  describe("#convolve", () => {
+    it("applies a 3x3 convolution kernel to the matrix", () => {
       let matrix = Matrix.fromArray(5, 5,
         [0,0,0,0,0,
          0,1,2,3,0,
@@ -83,7 +83,7 @@ describe("Matrix", function() {
       );
     });
 
-    it("tests the performance of convolve", function() {
+    it("tests the performance of convolve", () => {
       let matrix = new Matrix(5000, 5000);
       let startTime = Date.now();
 
@@ -97,7 +97,7 @@ describe("Matrix", function() {
       console.log(`convolve took: ${endTime - startTime} milliseconds`);
     });
 
-    it("detects edges", function() {
+    it("detects edges", () => {
       let matrix = Matrix.fromArray(6, 6,
         [  0,  0,  0,  0,  0,  0,
            0,  0,  0,  0,  0,  0,
@@ -124,8 +124,8 @@ describe("Matrix", function() {
     });
   });
 
-  describe("#weightedConvolve", function() {
-    it("applies a 3x3 box blur convolution kernel to the matrix", function() {
+  describe("#weightedConvolve", () => {
+    it("applies a 3x3 box blur convolution kernel to the matrix", () => {
       let matrix = Matrix.fromArray(3, 3,
         [1,1,1,
          1,2,1,
@@ -145,7 +145,7 @@ describe("Matrix", function() {
       );
     });
 
-    it("tests the performance of weightedConvolve", function() {
+    it("tests the performance of weightedConvolve", () => {
       let matrix = new Matrix(5000, 5000);
       let startTime = Date.now();
 
@@ -160,8 +160,8 @@ describe("Matrix", function() {
     });
   });
 
-  describe("#toImageData", function() {
-    it("returns the Matrix as an ImageData object", function() {
+  describe("#toImageData", () => {
+    it("returns the Matrix as an ImageData object", () => {
       let matrix = Matrix.fromArray(2, 2, [0,2,4,8]);
       let imageData = matrix.toImageData();
       let pixelData = new Uint8ClampedArray([0,0,0,255,2,2,2,255,4,4,4,255,8,8,8,255]);
@@ -170,15 +170,15 @@ describe("Matrix", function() {
     });
   });
 
-  describe("#toArray", function() {
-    it("returns the Matrix as a flat array", function() {
+  describe("#toArray", () => {
+    it("returns the Matrix as a flat array", () => {
       let matrix = Matrix.fromArray(2, 2, [1,2,3,4]);
       expect(matrix.toArray()).toEqual([1,2,3,4]);
     });
   });
 
-  describe(".fromImageData", function() {
-    it("creates a Matrix from an ImageData object", function() {
+  describe(".fromImageData", () => {
+    it("creates a Matrix from an ImageData object", () => {
       let pixelData = new Uint8ClampedArray([0,0,0,255,2,2,2,255,4,4,4,255,8,8,8,255]);
       let imageData = new ImageData(pixelData, 2, 2);
       let matrix = Matrix.fromImageData(imageData);
@@ -190,8 +190,8 @@ describe("Matrix", function() {
     });
   });
 
-  describe(".fromArray", function() {
-    it("creates a Matrix from an array given width and height", function() {
+  describe(".fromArray", () => {
+    it("creates a Matrix from an array given width and height", () => {
       let matrix = Matrix.fromArray(3, 3,
        [1,2,3,
         4,5,6,

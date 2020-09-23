@@ -23,13 +23,13 @@ To install Metro as an end-user please see the Metro website: TODO
 ### TODO:
 
 Things that need to be done:
+- `Matrix.fromArray` should raise error when `array.length != width * height`
 - Implement `Contour#width`
 - Implement `Contour#height`
 - Implement `Contour#center`
 - Implement `Contour#findChildren`
 - Implement `Contour#children`
 - Implement `Contour#parent`
-- Implement `Contour#drawOnCanvas(canvas, color)`
 
 
 ### License
