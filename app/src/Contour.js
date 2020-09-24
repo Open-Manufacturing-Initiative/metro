@@ -42,14 +42,13 @@ module.exports = class Contour {
 
   xMinIntersect() {
     let xMin = this.points.min(point => point.x);
-    let yMin = this.points.filter(point => point.x === xMin).min(point => point.y);
+    let yMin = this.points.filter(point => point.x === xMin).min(point => point.y)
     return new Point(xMin, yMin);
   }
 
   xMaxIntersect() {
-    let xMax = this.points.max(point => point.x);
-    let yMax = this.points.filter(point => point.x === xMax).max(point => point.y);
- 
+    let yMax = this.points.max(point => point.x)
+
     let xMax = this.boundingBox().max.x;
     let xMaxIntersect = new Point(xMax,0);
     this.points.forEach((point) => {
