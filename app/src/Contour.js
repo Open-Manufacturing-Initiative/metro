@@ -120,14 +120,14 @@ module.exports = class Contour {
   findContigousPixels
 
   static DIRECTIONS = Object.freeze([
-    { x: 0, y:-1 },
-    { x: 1, y: 0 },
-    { x: 0, y: 1 },
-    { x:-1, y: 0 },
-    { x: 1, y:-1 },
-    { x: 1, y: 1 },
-    { x:-1, y: 1 },
-    { x:-1, y:-1 }
+    { x: 0, y:-1, heading: 0   }, // ⬆️
+    { x: 1, y: 0, heading: 90  }, // ➡️
+    { x: 0, y: 1, heading: 180 }, // ⬇️
+    { x:-1, y: 0, heading: 270 }, // ⬅️
+    { x: 1, y:-1, heading: 45  }, // ↗️
+    { x: 1, y: 1, heading: 135 }, // ↘️
+    { x:-1, y: 1, heading: 225 }, // ↙️
+    { x:-1, y:-1, heading: 315 }  // ↖️
   ]);
 
   static traceFromMatrix(matrix, startX, startY) {
