@@ -233,6 +233,33 @@ describe("Contour", () => {
     });
   });
 
+  describe("#findEnclosedContours", () => {
+    it("returns enclosed contours", () => {
+      let matrix = Matrix.fromArray(10, 10,
+        [0,0,0,0,0,0,0,0,0,0,
+         0,1,1,1,1,1,1,1,1,0,
+         0,1,0,0,0,0,0,0,1,0,
+         0,1,0,1,1,1,0,0,1,0,
+         0,1,0,1,0,1,0,1,1,0,
+         0,1,0,1,0,1,0,1,0,0,
+         0,1,0,1,1,1,0,1,0,0,
+         0,1,0,0,0,0,0,1,0,0,
+         0,0,1,0,0,0,1,0,0,0,
+         0,0,0,1,1,1,0,0,0,0]
+      );
+
+      let contour = Contour.traceFromMatrix(matrix, 1, 1);
+      expect(contour.boundingBox()).toEqual({ min: new Point(1, 1), max: new Point(8, 9) });
+      expect(contour.points.length).toEqual(26);
+      expect(contour.isClosed()).toEqual(true);
+
+      expect(contour.children.length).toEqual(1);
+      expect(contour.children.first()).toEqual(Jasmine.any(Contour));
+      expect(contour.children.first().points.length).toEqual(10);
+      expect(contour.children.first().boundingBox()).toEqual({ min: new Point(3, 3), max: new Point(5, 6) });
+    });
+  });
+
   describe(".traceFromMatrix", () => {
     it("returns a new contour with the correct points", () => {
       let matrix = Matrix.fromArray(10, 10,
@@ -252,6 +279,15 @@ describe("Contour", () => {
       expect(contour.boundingBox()).toEqual({ min: new Point(1, 1), max: new Point(8, 9) });
       expect(contour.points.length).toEqual(31);
       expect(contour.isClosed()).toEqual(true);
+
+      expect(contour.points[0]).toEqual(new Point(1,1,undefined));
+      expect(contour.points[1]).toEqual(new Point(2,1,90));
+      expect(contour.points[2]).toEqual(new Point(3,1,90));
+      expect(contour.points[3]).toEqual(new Point(3,2,180));
+      expect(contour.points[4]).toEqual(new Point(4,2,90));
+      expect(contour.points[5]).toEqual(new Point(5,2,90));
+      expect(contour.points[6]).toEqual(new Point(6,2,90));
+      expect(contour.points[7]).toEqual(new Point(6,1,0));
     });
   });
 

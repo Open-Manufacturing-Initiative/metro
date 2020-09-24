@@ -144,7 +144,7 @@ module.exports = class Contour {
         if(matrix[x][y] != contourColor)      { return false; }
         if(contour.includes(new Point(x,y)))  { return false; }
 
-        contour.points.push(new Point(x,y));
+        contour.points.push(new Point(x, y, direction.heading));
         return true;
       });
 

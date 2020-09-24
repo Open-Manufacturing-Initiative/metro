@@ -38,6 +38,7 @@ Things that need to be done:
 - Implement `Contour#findChildren`
 - Implement `Contour#children`
 - Implement `Contour#parent`
+- Implement `Contour#findEnclosedContours`
 
 
 ### License
