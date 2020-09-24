@@ -1,5 +1,6 @@
 'use strict';
 
+require(__dirname + '/polyfills');
 let Point = require(__dirname + '/Point');
 
 module.exports = class Contour {
@@ -8,16 +9,10 @@ module.exports = class Contour {
   }
 
   boundingBox() {
-    let boundingBox = { min: new Point(Infinity,Infinity), max: new Point(0,0) };
-
-    this.points.forEach((point) => {
-      if(point.x < boundingBox.min.x) { boundingBox.min.x = point.x; }
-      if(point.x > boundingBox.max.x) { boundingBox.max.x = point.x; }
-      if(point.y < boundingBox.min.y) { boundingBox.min.y = point.y; }
-      if(point.y > boundingBox.max.y) { boundingBox.max.y = point.y; }
-    });
-
-    return boundingBox;
+    return { 
+      min: new Point(this.points.min(point => point.x), this.points.min(point => point.y)), 
+      max: new Point(this.points.max(point => point.x), this.points.max(point => point.y)),
+    }
   }
 
   includes(otherPoint) {
@@ -38,23 +33,23 @@ module.exports = class Contour {
   }
 
   start() {
-    return this.points[0];
+    return this.points.first();
   }
 
   end() {
-    return this.points[this.points.length - 1];
+    return this.points.last();
   }
 
   xMinIntersect() {
-    let xMin = this.boundingBox().min.x;
-    let xMinIntersect = new Point(xMin,Infinity);
-    this.points.forEach((point) => {
-      if(point.x === xMin && point.y < xMinIntersect.y) { xMinIntersect = point; }
-    });
-    return xMinIntersect;
+    let xMin = this.points.min(point => point.x);
+    let yMin = this.points.filter(point => point.x === xMin).min(point => point.y);
+    return new Point(xMin, yMin);
   }
 
   xMaxIntersect() {
+    let xMax = this.points.max(point => point.x);
+    let yMax = this.points.filter(point => point.x === xMax).max(point => point.y);
+ 
     let xMax = this.boundingBox().max.x;
     let xMaxIntersect = new Point(xMax,0);
     this.points.forEach((point) => {
