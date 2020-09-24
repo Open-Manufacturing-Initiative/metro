@@ -62,7 +62,7 @@ describe("polyfills", () => {
   });
 
  describe("Array#avg", () => {
-    it("returns theaverage of the numerical elements when called with no parameters", () => {
+    it("returns the average of the numerical elements when called with no parameters", () => {
       let array = [5,4,3,2,9,4,5];
       expect(array.avg()).toEqual(4.571428571428571);
     });
@@ -75,6 +75,15 @@ describe("polyfills", () => {
     it("uses a supplied function to find the average", () => {
       let array = [{a: 5}, {a: 4}, {a: 3}, {a: 9}, {a: 2}];
       expect(array.avg(x => x.a)).toEqual(4.6);
+    });
+  });
+
+ describe("Number#times", () => {
+    it("calls the given function n times", () => {
+      let array = [];
+      let number = 5;
+      number.times(x => array.push(x));
+      expect(array).toEqual([0,1,2,3,4]);
     });
   });
 });

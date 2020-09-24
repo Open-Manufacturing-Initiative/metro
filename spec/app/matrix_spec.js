@@ -94,7 +94,7 @@ describe("Matrix", () => {
       );
 
       let endTime = Date.now();
-      //console.log(`convolve took: ${endTime - startTime} milliseconds`);
+      console.log(`convolve took: ${endTime - startTime} milliseconds`);
     });
 
     it("detects edges", () => {
@@ -156,7 +156,7 @@ describe("Matrix", () => {
       );
 
       let endTime = Date.now();
-      //console.log(`weightedConvolve took: ${endTime - startTime} milliseconds`);
+      console.log(`weightedConvolve took: ${endTime - startTime} milliseconds`);
     });
   });
 

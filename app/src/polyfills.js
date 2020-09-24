@@ -51,3 +51,10 @@ Array.prototype.avg = function(func) {
 		}) / this.length;
 	}
 }
+
+if(Number.prototype.times) { throw "Number#times already defined"; }
+Number.prototype.times = function(func) {
+	for(let x = 0; x < this; x++) {
+		func(x);
+	}
+}

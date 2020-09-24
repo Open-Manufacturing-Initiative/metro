@@ -1,12 +1,14 @@
 'use strict';
 
+require(__dirname + '/polyfills');
+
 module.exports = class Matrix {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-    for(let x = 0; x < width; x++) {
+    width.times((x) => {
       this[x] = new Array(height).fill(0);
-    }
+    });
   }
 
   map(func) {

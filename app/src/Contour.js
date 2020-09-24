@@ -47,32 +47,21 @@ module.exports = class Contour {
   }
 
   xMaxIntersect() {
-    let yMax = this.points.max(point => point.x)
-
-    let xMax = this.boundingBox().max.x;
-    let xMaxIntersect = new Point(xMax,0);
-    this.points.forEach((point) => {
-      if(point.x === xMax && point.y > xMaxIntersect.y) { xMaxIntersect = point; }
-    });
-    return xMaxIntersect;
+    let xMax = this.points.max(point => point.x);
+    let yMax = this.points.filter(point => point.x === xMax).max(point => point.y)
+    return new Point(xMax, yMax);
   }
 
   yMinIntersect() {
-    let yMin = this.boundingBox().min.y;
-    let yMinIntersect = new Point(0,yMin);
-    this.points.forEach((point) => {
-      if(point.y === yMin && point.x > yMinIntersect.x) { yMinIntersect = point; }
-    });
-    return yMinIntersect;
+    let yMin = this.points.min(point => point.y);
+    let xMax = this.points.filter(point => point.y === yMin).max(point => point.x);
+    return new Point(xMax, yMin);
   }
 
   yMaxIntersect() {
-    let yMax = this.boundingBox().max.y;
-    let yMaxIntersect = new Point(Infinity,yMax);
-    this.points.forEach((point) => {
-      if(point.y === yMax && point.x < yMaxIntersect.x) { yMaxIntersect = point; }
-    });
-    return yMaxIntersect;
+    let yMax = this.points.max(point => point.y);
+    let xMin = this.points.filter(point => point.y === yMax).min(point => point.x);
+    return new Point(xMin, yMax);
   }
 
   drawOnMatrix(matrix, color) {
