@@ -40,6 +40,12 @@ module.exports = class Contour {
     return this.points.last();
   }
 
+  translate(x, y) {
+    this.points.forEach((point) => {
+      point.translate(x, y);
+    });
+  }
+
   xMinIntersect() {
     let xMin = this.points.min(point => point.x);
     let yMin = this.points.filter(point => point.x === xMin).min(point => point.y)
@@ -117,7 +123,11 @@ module.exports = class Contour {
     });
   }
 
-  findContigousPixels
+  enclosedPoints() {
+    let matrix = Matrix.new(this.boundingBox().max.x, this.boundingBox().max.y);
+    this.drawOnMatrix(matrix, 255);
+
+  }
 
   static DIRECTIONS = Object.freeze([
     { x: 0, y:-1, heading: 0   }, // ⬆️

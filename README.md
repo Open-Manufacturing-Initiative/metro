@@ -30,6 +30,8 @@ Things that need to be done:
 - Work on classifying & fingerprinting Parts
 - Work out nicer way of setting up tests with matrixes
 - Work out how to use images as input for specs
+- Use `Point#translate` or similar in contour finding and floodfill loops
+- Implement `Contour#copy`
 - Implement `Contour#xMinIntersect`, etc...
 - Implement `Contour#minBoundingCircle`?
 - Implement `Contour#width`

@@ -35,7 +35,7 @@ describe("polyfills", () => {
 
     it("raises typeError when called without paramaters on an array that is not numeric", () => {
       let array = [{},NaN];
-      expect(() => { array.min(); }).toThrow("typeError: Array#min only works on arrays full of numeric elements when called with no parameters.");
+      expect(() => array.min()).toThrow("typeError: Array#min only works on arrays full of numeric elements when called with no parameters.");
     });
 
     it("uses a supplied function to find the min", () => {
@@ -52,7 +52,7 @@ describe("polyfills", () => {
 
     it("raises typeError when called without paramaters on an array that is not numeric", () => {
       let array = [{},NaN];
-      expect(() => { array.max(); }).toThrow("typeError: Array#min only works on arrays full of numeric elements when called with no parameters.");
+      expect(() => array.max()).toThrow("typeError: Array#min only works on arrays full of numeric elements when called with no parameters.");
     });
 
     it("uses a supplied function to find the max", () => {
@@ -69,7 +69,7 @@ describe("polyfills", () => {
 
     it("raises typeError when called without paramaters on an array that is not numeric", () => {
       let array = [{},NaN];
-      expect(() => { array.avg(); }).toThrow("typeError: Array#avg only works on arrays full of numeric elements when called with no parameters.");
+      expect(() => array.avg()).toThrow("typeError: Array#avg only works on arrays full of numeric elements when called with no parameters.");
     });
 
     it("uses a supplied function to find the average", () => {

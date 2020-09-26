@@ -102,6 +102,19 @@ describe("Contour", () => {
     });
   });
 
+  describe("#translate", () => {
+    it("translates each point in the contour by the given amount", () => {
+      let contour = new Contour([new Point(2,2), new Point(1,2), new Point(2,1), new Point(10,10), new Point(9,11)]);
+      contour.translate(10, 10);
+
+      expect(contour.points[0]).toEqual(new Point(12,12));
+      expect(contour.points[1]).toEqual(new Point(11,12));
+      expect(contour.points[2]).toEqual(new Point(12,11));
+      expect(contour.points[3]).toEqual(new Point(20,20));
+      expect(contour.points[4]).toEqual(new Point(19,21));
+    });
+  });
+
   describe("#drawOnMatrix", () =>{
     it("draws each of the points on a target Matrix in the given color", () =>{
       let contour = new Contour([new Point(1,1), new Point(1,2), new Point(1,3), new Point(2,4), new Point(3,4)]);

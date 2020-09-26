@@ -1,6 +1,7 @@
 'use strict';
 
 require(__dirname + '/polyfills');
+let Point = require(__dirname + '/Point');
 
 module.exports = class Matrix {
   constructor(width, height) {
@@ -80,6 +81,27 @@ module.exports = class Matrix {
     return output;
   }
 
+  floodFill(xStart, yStart, fillValue) {
+    let startValue = this[xStart][yStart];
+    let fillQueue = [ new Point(xStart, yStart) ];
+
+    while(fillQueue.length > 0) {
+      let point = fillQueue.pop();
+      this[point.x][point.y] = fillValue;
+
+      Matrix.DIRECTIONS.forEach((direction) => {
+        let x = point.x + direction.x;
+        let y = point.y + direction.y;
+
+        if(x < 0 || x > this.width - 1)     { return; }
+        if(y < 0 || y > this.height - 1)    { return; }
+        if(this[x][y] != startValue)        { return; }
+
+        fillQueue.push(new Point(x, y));
+      });
+    }
+  }
+
   toImageData() {
     let pixelData = new Array();
 
@@ -107,6 +129,13 @@ module.exports = class Matrix {
 
     return pixelData;
   }
+
+  static DIRECTIONS = Object.freeze([
+    { x: 0, y:-1 }, // ⬆️
+    { x: 1, y: 0 }, // ➡️
+    { x: 0, y: 1 }, // ⬇️
+    { x:-1, y: 0 }  // ⬅️
+  ]);
 
   static fromImageData(imageData) {
     let matrix = new Matrix(imageData.width, imageData.height);
