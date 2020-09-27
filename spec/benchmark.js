@@ -1,0 +1,88 @@
+require("./../app/src/polyfills");
+let Benchmark = require("./support/Benchmark");
+let Point = require("./../app/src/Point");
+let Matrix = require("./../app/src/Matrix");
+let Contour = require("./../app/src/Contour");
+
+Benchmark.class("Matrix", () => {
+	Benchmark.do("Matrix.new", function() {
+	  this.time(() => {
+		  new Matrix(5000, 5000);
+		});
+	});
+
+	Benchmark.do("Matrix#convolve", function() {
+	  let matrix = new Matrix(5000, 5000);
+
+	  this.time(() => {
+		  matrix.convolve(
+		   [1,1,1,
+		    1,1,1,
+		    1,1,1]
+		  );
+		});
+	});
+
+	Benchmark.do("Matrix#weightedConvolve", function() {
+	  let matrix = new Matrix(5000, 5000);
+
+	  this.time(() => {
+		  matrix.weightedConvolve(
+		   [1,1,1,
+		    1,1,1,
+		    1,1,1]
+		  );
+		});
+	});
+
+	Benchmark.do("Matrix#map", function() {
+	  let matrix = new Matrix(5000, 5000);
+
+	  this.time(() => {
+		  matrix.map((point) => {
+		  	//no-op
+		  });
+		});
+	});
+
+	Benchmark.do("Matrix#floodFill", function() {
+	  let matrix = new Matrix(1000, 1000);
+
+	  this.time(() => {
+		  matrix.floodFill(0,0, 255);
+		});
+	});
+
+	Benchmark.do("Matrix#fromArray", function() {
+	  let array = new Array(5000 * 5000);
+
+	  this.time(() => {
+		  Matrix.fromArray(5000, 5000, array);
+		});
+	});
+
+	Benchmark.do("Matrix#[x][y](x1000)", function() {
+	  let matrix = new Matrix(5000, 5000);
+
+	  this.time(() => {
+	  	for(let x = 0; x < 1000; x++){
+	  		matrix[10][1000];
+	  	}
+		});
+	});
+});
+
+Benchmark.class("Point", () => {
+	Benchmark.do("Point.new", function() {
+		this.time(() => {
+			new Point(10, 10, 90);
+		});
+	});
+
+	Benchmark.do("Point#translate", function() {
+		let point = new Point(10, 10, 90);
+		this.time(() => {
+			point.translate(10, 10);
+		});
+	});
+});

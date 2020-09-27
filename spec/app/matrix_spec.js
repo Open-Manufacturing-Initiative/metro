@@ -83,20 +83,6 @@ describe("Matrix", () => {
       );
     });
 
-    it("tests the performance of convolve", () => {
-      let matrix = new Matrix(5000, 5000);
-      let startTime = Date.now();
-
-      let output = matrix.convolve(
-       [1,1,1,
-        1,1,1,
-        1,1,1]
-      );
-
-      let endTime = Date.now();
-      console.log(`convolve took: ${endTime - startTime} milliseconds`);
-    });
-
     it("detects edges", () => {
       let matrix = Matrix.fromArray(6, 6,
         [  0,  0,  0,  0,  0,  0,
@@ -143,20 +129,6 @@ describe("Matrix", () => {
          1,1,1,
          1,1,1]
       );
-    });
-
-    it("tests the performance of weightedConvolve", () => {
-      let matrix = new Matrix(5000, 5000);
-      let startTime = Date.now();
-
-      let output = matrix.weightedConvolve(
-       [1,1,1,
-        1,1,1,
-        1,1,1]
-      );
-
-      let endTime = Date.now();
-      console.log(`weightedConvolve took: ${endTime - startTime} milliseconds`);
     });
   });
 

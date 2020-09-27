@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "karma start --single-run --browsers=JasmineElectron karma.conf.js",
+    "benchmark": "node ./spec/benchmark.js",
     "start": "electron ."
   },
   "repository": {
