@@ -18,6 +18,7 @@ To install Metro as an end-user please see the Metro website: TODO
 - Open the Metro directory: `cd metro`
 - Install Node packages: `npm install`
 - Run the tests: `npm test`
+- Run the benchmarks: `npm run benchmark`
 - Start the Electron app: `npm start`
 
 ### TODO:
