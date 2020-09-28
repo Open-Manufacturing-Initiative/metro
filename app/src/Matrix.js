@@ -44,7 +44,7 @@ module.exports = class Matrix {
         accumulator += (kernel[7] * this[x        ][yPlusOne ]);
         accumulator += (kernel[8] * this[xPlusOne ][yPlusOne ]);
 
-        output[x][y] = Math.min(Math.max(accumulator, 0), 255);
+        output[x][y] = accumulator;
       }
     }
 
@@ -75,7 +75,7 @@ module.exports = class Matrix {
         accumulator += (kernel[7] * this[x        ][yPlusOne ]);
         accumulator += (kernel[8] * this[xPlusOne ][yPlusOne ]);
 
-        output[x][y] = Math.floor(accumulator / weight);
+        output[x][y] = accumulator / weight;
       }
     }
 
@@ -84,23 +84,52 @@ module.exports = class Matrix {
 
   floodFill(xStart, yStart, fillValue) {
     let startValue = this[xStart][yStart];
-    let fillQueue = [ new Point(xStart, yStart) ];
+    let fillQueue = [new Point(xStart, yStart)];
 
     while(fillQueue.length > 0) {
       let point = fillQueue.pop();
-      this[point.x][point.y] = fillValue;
+      let x = point.x;
+      let y = point.y;
 
-      for(let i = 0; i < 4; i++) {
-        let direction = Matrix.DIRECTIONS[i];
-        let x = point.x + direction.x;
-        let y = point.y + direction.y;
+      let lastColorRight = undefined;
+      let lastColorLeft  = undefined;
 
-        if(x < 0 || x > this.width - 1)     { continue; }
-        if(y < 0 || y > this.height - 1)    { continue; }
-        if(this[x][y] != startValue)        { continue; }
+      while(y > 0 && this[x][y - 1] == startValue) { y-- }
 
-        fillQueue.push(new Point(x, y));
+      for(; y < this.height; y++) {
+        if(this[x][y] != startValue) { break; }
+        this[x][y] = fillValue;
+
+        if(x < this.width - 1) { 
+          let rightValue = this[x + 1][y];
+          if(rightValue == startValue && rightValue != lastColorRight) { fillQueue.push(new Point(x + 1, y)); }
+          lastColorRight = rightValue; 
+        }
+
+        if(x > 0) { 
+          let leftValue = this[x - 1][y];
+          if(leftValue == startValue && leftValue != lastColorLeft ) { fillQueue.push(new Point(x - 1, y)); }
+          lastColorLeft = leftValue; 
+        }
       }
+    }
+  }
+
+  floodColumn(xStart, yStart, fillValue) {
+    let column = this[xStart];
+    let startValue = column[yStart];
+    let adjacentPixels = [];
+
+    this[xStart][yStart] = fillValue;
+
+    for(let y = yStart + 1; y < this.height; y++) {
+      if(column[y] != startValue) { break; }
+      this[xStart][y] = fillValue;
+    }
+
+    for(let y = yStart - 1; y > 0; y--) {
+      if(column[y] != startValue) { break; }
+      this[xStart][y] = fillValue;
     }
   }
 
