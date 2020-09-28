@@ -52,6 +52,21 @@ Array.prototype.avg = function(func) {
 	}
 }
 
+if(Array.init) { throw "Array.init already defined"; }
+Array.init = function(length, initValue = null) {
+	let array = [];
+	if(typeof(initValue) === 'function') {
+		for(let i = 0; i < length; i++) {
+			array.push(initValue(i));
+		}
+	} else {
+		for(let i = 0; i < length; i++) {
+			array.push(initValue);
+		}
+	}
+	return array;
+}
+
 if(Number.prototype.times) { throw "Number#times already defined"; }
 Number.prototype.times = function(func) {
 	for(let x = 0; x < this; x++) {

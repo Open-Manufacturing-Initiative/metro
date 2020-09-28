@@ -46,7 +46,7 @@ Benchmark.class("Matrix", () => {
 	});
 
 	Benchmark.do("Matrix#floodFill", function() {
-	  let matrix = new Matrix(1000, 1000);
+	  let matrix = new Matrix(500, 500);
 
 	  this.time(() => {
 		  matrix.floodFill(0,0, 255);
@@ -83,6 +83,40 @@ Benchmark.class("Point", () => {
 		let point = new Point(10, 10, 90);
 		this.time(() => {
 			point.translate(10, 10);
+		});
+	});
+});
+
+Benchmark.class("Contour", () => {
+	Benchmark.do("Contour.new", function() {
+		let points = Array.init(5000, i => new Point(i,i));
+
+		this.time(() => {
+			new Contour(points);
+		});
+	});
+
+	Benchmark.do("Contour#includes", function() {
+		let contour = new Contour(Array.init(5000, i => new Point(i,i)));
+
+		this.time(() => {
+			contour.includes(new Point(Infinity, Infinity));
+		});
+	});
+
+	Benchmark.do("Contour#isClosed", function() {
+		let contour = new Contour(Array.init(5000, i => new Point(i,i)));
+
+		this.time(() => {
+			contour.isClosed();
+		});
+	});
+
+	Benchmark.do("Contour#isOpen", function() {
+		let contour = new Contour(Array.init(5000, i => new Point(i,i)));
+
+		this.time(() => {
+			contour.isOpen();
 		});
 	});
 });
