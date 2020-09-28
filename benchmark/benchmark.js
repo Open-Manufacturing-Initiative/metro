@@ -7,12 +7,12 @@ let Contour = require("./../app/src/Contour");
 Benchmark.class("Matrix", () => {
 	Benchmark.do("Matrix.new", function() {
 	  this.time(() => {
-		  new Matrix(5000, 5000);
+		  new Matrix(1920, 1080);
 		});
 	});
 
 	Benchmark.do("Matrix#convolve", function() {
-	  let matrix = new Matrix(5000, 5000);
+	  let matrix = new Matrix(1920, 1080);
 
 	  this.time(() => {
 		  matrix.convolve(
@@ -24,7 +24,7 @@ Benchmark.class("Matrix", () => {
 	});
 
 	Benchmark.do("Matrix#weightedConvolve", function() {
-	  let matrix = new Matrix(5000, 5000);
+	  let matrix = new Matrix(1920, 1080);
 
 	  this.time(() => {
 		  matrix.weightedConvolve(
@@ -36,7 +36,7 @@ Benchmark.class("Matrix", () => {
 	});
 
 	Benchmark.do("Matrix#map", function() {
-	  let matrix = new Matrix(5000, 5000);
+	  let matrix = new Matrix(1920, 1080);
 
 	  this.time(() => {
 		  matrix.map((point) => {
@@ -46,7 +46,7 @@ Benchmark.class("Matrix", () => {
 	});
 
 	Benchmark.do("Matrix#floodFill", function() {
-	  let matrix = new Matrix(500, 500);
+	  let matrix = new Matrix(1920, 1080);
 
 	  this.time(() => {
 		  matrix.floodFill(0,0, 255);
@@ -54,15 +54,15 @@ Benchmark.class("Matrix", () => {
 	});
 
 	Benchmark.do("Matrix#fromArray", function() {
-	  let array = new Array(5000 * 5000);
+	  let array = new Array(1920 * 1080);
 
 	  this.time(() => {
-		  Matrix.fromArray(5000, 5000, array);
+		  Matrix.fromArray(1920, 1080, array);
 		});
 	});
 
 	Benchmark.do("Matrix#[x][y](x1000)", function() {
-	  let matrix = new Matrix(5000, 5000);
+	  let matrix = new Matrix(1920, 1080);
 
 	  this.time(() => {
 	  	for(let x = 0; x < 1000; x++){

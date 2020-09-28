@@ -89,16 +89,17 @@ module.exports = class Matrix {
       let point = fillQueue.pop();
       this[point.x][point.y] = fillValue;
 
-      Matrix.DIRECTIONS.forEach((direction) => {
+      for(let i = 0; i < 4; i++) {
+        let direction = Matrix.DIRECTIONS[i];
         let x = point.x + direction.x;
         let y = point.y + direction.y;
 
-        if(x < 0 || x > this.width - 1)     { return; }
-        if(y < 0 || y > this.height - 1)    { return; }
-        if(this[x][y] != startValue)        { return; }
+        if(x < 0 || x > this.width - 1)     { continue; }
+        if(y < 0 || y > this.height - 1)    { continue; }
+        if(this[x][y] != startValue)        { continue; }
 
         fillQueue.push(new Point(x, y));
-      });
+      }
     }
   }
 
