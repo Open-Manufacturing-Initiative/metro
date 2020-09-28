@@ -9,7 +9,7 @@ module.exports = class Matrix {
     this.height = height;
 
     for(let x = 0; x < this.width; x++) {
-      this[x] = new Array(height).fill(0);
+      this[x] = new Uint8ClampedArray(height).fill(0);
     }
   }
 
@@ -75,7 +75,7 @@ module.exports = class Matrix {
         accumulator += (kernel[7] * this[x        ][yPlusOne ]);
         accumulator += (kernel[8] * this[xPlusOne ][yPlusOne ]);
 
-        output[x][y] = Math.min(Math.max(Math.floor(accumulator / weight), 0), 255);
+        output[x][y] = Math.floor(accumulator / weight);
       }
     }
 
@@ -105,27 +105,29 @@ module.exports = class Matrix {
   }
 
   toImageData() {
-    let pixelData = new Array();
+    let width = this.width;
+    let height = this.height;
+    let pixelData = new Uint8ClampedArray(width * height * 4);
 
-    for(let y = 0; y < this.height; y++) {
-      for(let x = 0; x < this.width; x++) {
-        pixelData.push(this[x][y]);
-        pixelData.push(this[x][y]);
-        pixelData.push(this[x][y]);
-        pixelData.push(255);
+    for(let x = 0; x < width; x++) {
+      for(let y = 0; y < height; y++) {
+        let i = (((y * width) + x) * 4);
+        pixelData[i] = pixelData[i + 1] = pixelData[i + 2] = this[x][y];
+        pixelData[i + 3] = 255;
       }
     }
 
-    let clampedArray = new Uint8ClampedArray(pixelData);
-    return { width: this.width, height: this.height, data: clampedArray };
+    return { width: this.width, height: this.height, data: pixelData };
   }
 
   toArray() {
-    let pixelData = new Array();
+    let width = this.width;
+    let height = this.height;
+    let pixelData = new Uint8ClampedArray(width * height);
 
-    for(let y = 0; y < this.height; y++) {
-      for(let x = 0; x < this.width; x++) {
-        pixelData.push(this[x][y]);
+    for(let x = 0; x < width; x++) {
+      for(let y = 0; y < height; y++) {
+        pixelData[((y * width) + x)] = this[x][y];
       }
     }
 

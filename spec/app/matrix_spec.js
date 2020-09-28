@@ -74,13 +74,13 @@ describe("Matrix", () => {
          1, 2, 1]
       );
 
-      expect(output.toArray()).toEqual(
+      expect(output.toArray()).toEqual(Uint8ClampedArray.from(
        [ 0,  0,  0,  0, 0,
          0,  0,  0,  0, 0,
          0,  0,  0,  0, 0,
          4, 13, 20, 17, 6,
          7, 22, 32, 26, 9]
-      );
+      ));
     });
 
     it("detects edges", () => {
@@ -99,7 +99,7 @@ describe("Matrix", () => {
         -1,-1,-1]
       );
 
-      expect(new Uint8ClampedArray(output.toArray())).toEqual(new Uint8ClampedArray(
+      expect(output.toArray()).toEqual(new Uint8ClampedArray(
         [  0,  0,  0,  0,  0,  0,
            0,  0,  0,  0,  0,  0,
            0,  0,  0,  0,  0,  0,
@@ -124,11 +124,11 @@ describe("Matrix", () => {
         1,1,1]
       );
 
-      expect(output.toArray()).toEqual(
+      expect(output.toArray()).toEqual(Uint8ClampedArray.from(
         [1,1,1,
          1,1,1,
          1,1,1]
-      );
+      ));
     });
   });
 
@@ -145,7 +145,7 @@ describe("Matrix", () => {
   describe("#toArray", () => {
     it("returns the Matrix as a flat array", () => {
       let matrix = Matrix.fromArray(2, 2, [1,2,3,4]);
-      expect(matrix.toArray()).toEqual([1,2,3,4]);
+      expect(matrix.toArray()).toEqual(Uint8ClampedArray.from([1,2,3,4]));
     });
   });
 
@@ -179,7 +179,7 @@ describe("Matrix", () => {
       );
 
       matrix.floodFill(2, 2, 9);
-      expect(matrix.toArray()).toEqual(
+      expect(matrix.toArray()).toEqual(Uint8ClampedArray.from(
         [9,9,9,9,9,9,9,9,9,9,
          9,1,1,1,9,9,1,1,1,9,
          9,1,9,1,1,1,1,9,1,9,
@@ -190,7 +190,7 @@ describe("Matrix", () => {
          9,9,1,9,9,1,9,9,9,9,
          9,9,1,9,9,1,9,9,9,9,
          9,9,1,1,1,1,9,9,9,9]
-      );
+      ));
     });
   });
 

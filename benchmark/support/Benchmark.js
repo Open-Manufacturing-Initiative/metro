@@ -27,7 +27,7 @@ module.exports = class Benchmark {
 
 	static do(name, func) {
 		let b = new Benchmark(name);
-		b.run(3, func.bind(b));
+		b.run(5, func.bind(b));
 		b.print();
 	}
 

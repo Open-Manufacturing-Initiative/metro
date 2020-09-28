@@ -122,13 +122,13 @@ describe("Contour", () => {
 
       contour.drawOnMatrix(matrix, 9);
 
-      expect(matrix.toArray()).toEqual(
+      expect(matrix.toArray()).toEqual(Uint8ClampedArray.from(
        [0,0,0,0,0,
         0,9,0,0,0,
         0,9,0,0,0,
         0,9,0,0,0,
         0,0,9,9,0]
-      );
+      ));
     });
   });
 
