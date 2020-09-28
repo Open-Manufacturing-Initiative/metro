@@ -2,6 +2,7 @@
 
 require(__dirname + '/polyfills');
 let Point = require(__dirname + '/Point');
+let Matrix = require(__dirname + '/Matrix');
 
 module.exports = class Contour {
   constructor(points) {
@@ -13,6 +14,14 @@ module.exports = class Contour {
       min: new Point(this.points.min(point => point.x), this.points.min(point => point.y)), 
       max: new Point(this.points.max(point => point.x), this.points.max(point => point.y)),
     }
+  }
+
+  width() {
+    return this.points.max(point => point.x) - this.points.min(point => point.x);
+  }
+
+  height() {
+    return this.points.max(point => point.y) - this.points.min(point => point.y);
   }
 
   includes(otherPoint) {
@@ -124,9 +133,24 @@ module.exports = class Contour {
   }
 
   enclosedPoints() {
-    let matrix = Matrix.new(this.boundingBox().max.x, this.boundingBox().max.y);
-    this.drawOnMatrix(matrix, 255);
+    let matrix = new Matrix(this.width() + 2, this.height() + 2);
+    let minX = this.boundingBox().min.x;
+    let minY = this.boundingBox().min.y;
+    let translatedContour = new Contour(this.points)
+    translatedContour.translate((-minX) + 1, (-minY) + 1);
 
+    translatedContour.drawOnMatrix(matrix, 255);
+    matrix.floodFill(0, 0, 255);
+
+    let enclosedPoints = [];
+
+    for(let x = 0; x < matrix.width; x++) {
+      for(let y = 0; y < matrix.height; y++) {
+        if(matrix[x][y] == 0) { enclosedPoints.push(new Point(x + minX - 1, y + minY - 1)); }
+      }
+    }
+
+    return enclosedPoints;
   }
 
   static DIRECTIONS = Object.freeze([
