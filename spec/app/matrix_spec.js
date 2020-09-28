@@ -5,7 +5,7 @@
 // https://en.wikipedia.org/wiki/Kernel_(image_processing)
 
 describe("Matrix", () => {
-  let Matrix = require(__dirname + '../../app/src/Matrix');
+  let Matrix = require('../../app/src/Matrix');
 
   describe("new", () => {
     it("returns a Matrix", () => {
@@ -138,7 +138,7 @@ describe("Matrix", () => {
       let imageData = matrix.toImageData();
       let pixelData = new Uint8ClampedArray([0,0,0,255,2,2,2,255,4,4,4,255,8,8,8,255]);
 
-      expect(imageData).toEqual(new ImageData(pixelData, 2, 2));
+      expect(imageData).toEqual({ width: 2, height: 2, data: pixelData });
     });
   });
 
@@ -197,7 +197,7 @@ describe("Matrix", () => {
   describe(".fromImageData", () => {
     it("creates a Matrix from an ImageData object", () => {
       let pixelData = new Uint8ClampedArray([0,0,0,255,2,2,2,255,4,4,4,255,8,8,8,255]);
-      let imageData = new ImageData(pixelData, 2, 2);
+      let imageData = { width: 2, height: 2, data: pixelData };
       let matrix = Matrix.fromImageData(imageData);
 
       expect(matrix[0][0]).toEqual(0);

@@ -1,9 +1,9 @@
 'use strict';
 
 describe("Contour", () => {
-  let Contour = require(__dirname + '../../app/src/Contour');
-  let Point   = require(__dirname + '../../app/src/Point');
-  let Matrix  = require(__dirname + '../../app/src/Matrix');
+  let Contour = require('../../app/src/Contour');
+  let Point   = require('../../app/src/Point');
+  let Matrix  = require('../../app/src/Matrix');
 
   describe("new", () => {
     it("returns a Contour", () => {

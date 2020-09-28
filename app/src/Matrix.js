@@ -7,9 +7,10 @@ module.exports = class Matrix {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-    width.times((x) => {
+
+    for(let x = 0; x < this.width; x++) {
       this[x] = new Array(height).fill(0);
-    });
+    }
   }
 
   map(func) {
@@ -116,7 +117,7 @@ module.exports = class Matrix {
     }
 
     let clampedArray = new Uint8ClampedArray(pixelData);
-    return new ImageData(clampedArray, this.width, this.height);
+    return { width: this.width, height: this.height, data: clampedArray };
   }
 
   toArray() {
@@ -140,12 +141,14 @@ module.exports = class Matrix {
 
   static fromImageData(imageData) {
     let matrix = new Matrix(imageData.width, imageData.height);
+    let width = imageData.width;
+    let height = imageData.height;
+    let pixelData = imageData.data;
 
-    for(let i = 0; i < imageData.data.length; i += 4) {
-      let x = (i / 4) % imageData.width;
-      let y = parseInt((i / 4) / imageData.width);
-
-      matrix[x][y] = imageData.data[i];
+    for(let x = 0; x < width; x++) {
+      for(let y = 0; y < height; y++) {
+        matrix[x][y] = pixelData[((y * width) + x) * 4];
+      }
     }
 
     return matrix;
@@ -153,11 +156,11 @@ module.exports = class Matrix {
 
   static fromArray(width, height, pixelData) {
     let matrix = new Matrix(width, height);
-    for(let i = 0; i < (width * height); i++) {
-      let x = i % width;
-      let y = parseInt(i / width);
 
-      matrix[x][y] = pixelData[i];
+    for(let x = 0; x < width; x++) {
+      for(let y = 0; y < height; y++) {
+        matrix[x][y] = pixelData[(y * width) + x];
+      }
     }
 
     return matrix;

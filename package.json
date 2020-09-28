@@ -7,7 +7,7 @@
     "node": "=12.16.3"
   },
   "scripts": {
-    "test": "karma start --single-run --browsers=JasmineElectron karma.conf.js",
+    "test": "jasmine",
     "benchmark": "node ./benchmark/benchmark.js",
     "start": "electron ."
   },
@@ -24,9 +24,6 @@
   "devDependencies": {
     "electron": "^10.1.1",
     "electron-reload": "^1.5.0",
-    "jasmine": "^3.6.1",
-    "karma": "^5.2.2",
-    "karma-electron": "^6.3.1",
-    "karma-jasmine": "^4.0.1"
+    "jasmine": "^3.6.1"
   }
 }

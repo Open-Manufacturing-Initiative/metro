@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Point", () => {
-  let Point = require(__dirname + '../../app/src/Point');
+  let Point = require('../../app/src/Point');
 
   describe("new", () => {
     it("returns a Point", () => {

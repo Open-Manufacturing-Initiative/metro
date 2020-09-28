@@ -53,6 +53,15 @@ Benchmark.class("Matrix", () => {
 		});
 	});
 
+	Benchmark.do("Matrix#fromImageData", function() {
+	  let pixelData = new Array(1920 * 1080 * 4).fill(255);
+	  let imageData = { width: 1920, height: 1080, data: pixelData };
+
+	  this.time(() => {
+		  Matrix.fromImageData(imageData);
+		});
+	});
+
 	Benchmark.do("Matrix#fromArray", function() {
 	  let array = new Array(1920 * 1080);
 

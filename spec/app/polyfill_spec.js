@@ -1,7 +1,7 @@
 'use strict';
 
 describe("polyfills", () => {
-  require(__dirname + '../../app/src/polyfills');
+  require('../../app/src/polyfills');
 
   describe("Array#last", () => {
     it("returns the last element when called with no parameters", () => {
