@@ -193,7 +193,7 @@ describe("Contour", () => {
   });
 
   describe("#yMinIntersect", () => {
-    it("returns the coordinates of the left-most point in the contour", () => {
+    it("returns the coordinates of the top-most point in the contour", () => {
       let matrix = Matrix.fromArray(11, 11,
         [0,0,0,0,1,1,1,0,0,0,0,
          0,0,0,1,0,0,0,1,0,0,0,

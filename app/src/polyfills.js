@@ -1,3 +1,5 @@
+'use strict';
+
 if(Array.prototype.first) { throw "Array#first already defined"; }
 Array.prototype.first = function(length = 1) {
 	if(length === 1) { return this[0]; }

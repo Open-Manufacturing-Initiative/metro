@@ -1,7 +1,7 @@
 'use strict';
 
 require(__dirname + '/polyfills');
-let Point = require(__dirname + '/Point');
+const Point = require(__dirname + '/Point');
 
 module.exports = class Matrix {
   constructor(width, height) {
@@ -146,7 +146,7 @@ module.exports = class Matrix {
       }
     }
 
-    return { width: this.width, height: this.height, data: pixelData };
+    return { data: pixelData, width: this.width, height: this.height }
   }
 
   toArray() {
